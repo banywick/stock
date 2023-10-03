@@ -15,6 +15,10 @@
           <li ><a href="{% url m.url_name %}">{{ m.title }}</a></li>
         {% endfor %}
 
+{% for r in remains %}
+   <p> {{ r.article }}   {{ r.title }}   {{ r.quantity }}</p>
+    {% endfor %}
+
 
 {% endblock menu %}
 

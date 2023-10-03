@@ -20,8 +20,9 @@ def update_load_document(request):
         doc = DocumentForm(request.POST, request.FILES)
         if doc.is_valid():
             doc.save()
+            delete_data_table()
             save_data_db()
-            print('Удалили все данные')
+            print('Данные загружены')
 
 
 

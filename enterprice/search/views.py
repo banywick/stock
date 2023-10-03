@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import DocumentForm
 from .utils import save_data_db, delete_data_table, get_doc_name,menu
 from .models import Remains
@@ -23,6 +23,7 @@ def update_load_document(request):
             delete_data_table()
             save_data_db()
             print('Данные загружены')
+            return redirect('main')
 
 
 

@@ -1,10 +1,34 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
+{% block menu %}
+
+<h2 style="text-align: center";>эта страница бэйс!! тут будут разные ссылки и контент в шапке</h2>
+ {% for m in menu %}
+          <li ><a href="{% url m.url_name %}">{{ m.title }}</a></li>
+        {% endfor %}
+
+
+{% endblock menu %}
+
+
+
+
+
+
+
+{% block update_page %}
+{% endblock %}
+
+{% block search %}
+{% endblock %}
 
 </body>
 </html>

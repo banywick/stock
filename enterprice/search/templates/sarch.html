@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+<title>{{ title }}</title>
+{% block search %}
+
+
+<h1>Должен быть список всех товаров</h1>
+
+{% for r in remains %}
+   <p> {{ r.article }}   {{ r.title }}   {{ r.quantity }}</p>
+    {% endfor %}
+
+
+
+{% endblock %}

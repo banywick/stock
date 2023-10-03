@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block update_page %}
+    <title>{{ title }}</title>
+
+    <div style="background: bisque">
+<form enctype="multipart/form-data" action="" method="POST">
+    {% csrf_token %}
+    {{ doc.as_p }}
+    <button>OK</button>
+</form>
+</div>
+
+{% endblock %}

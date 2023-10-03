@@ -8,47 +8,57 @@ menu = [{'title': 'Главная', 'url_name': 'main'},
         {'title': 'Обновить базу', 'url_name': 'update'}
         ]
 
-db_path = Path('../my_db.sqlite3')
+db_path = Path('../db.sqlite3')
 
 
 def get_doc_name():  # Функция для получения имени последнего документа
-    with sqlite3.connect(db_path) as con:
+    try:
+        con = sqlite3.connect(db_path)
         cursor = con.cursor()
         print("Подключен к SQLite получаем имя докуметна")
-        cursor.execute("""SELECT * FROM maxfind_document ORDER BY id DESC LIMIT 1;""")
+        cursor.execute("""SELECT * FROM search_document ORDER BY id;""")
         doc = cursor.fetchone()
         return doc[1]
 
+    except:
+            print(f'ошибка в получении имени >>> ')
+    print(get_doc_name())
+
 
 def save_data_db():
-    file_name = Path('../media', get_doc_name())
-    print(file_name)
-    with sqlite3.connect(db_path) as con:
-        cursor = con.cursor()
-        print('Соединение с базой данных')
-        book = openpyxl.load_workbook(file_name, read_only=True)
-        sheet = book.active
-        for row in sheet.iter_rows(min_row=15, max_row=20, min_col=12, max_col=19, values_only=True):
-            comment = row[0]
-            code = row[1]
-            article = row[2]
-            party = row[3]
-            title = row[4]
-            base_unit = row[5]
-            project = row[6]
-            quantity = row[7]
-            print(comment)
-            cursor.execute(
-                f"INSERT INTO maxfind_remains(comment,code,article,party,title,base_unit,project,quantity)"
-                f" VALUES  ('{comment}', '{code}','{article}',"
-                f"'{party}','{title}','{base_unit}','{project}','{quantity}')")
-        print('База успешно записана')
-        cursor.close()
+    try:
+        file_name = Path('../media', get_doc_name())
+        print(f'имя файла {get_doc_name()}')
+        with sqlite3.connect(db_path) as con:
+            cursor = con.cursor()
+            print('Соединение с базой данных успешн')
+            book = openpyxl.load_workbook(file_name, read_only=True)
+            sheet = book.active
+            for row in sheet.iter_rows(min_row=15, max_row=20, min_col=12, max_col=19, values_only=True):
+                comment = row[0]
+                code = row[1]
+                article = row[2]
+                party = row[3]
+                title = row[4]
+                base_unit = row[5]
+                project = row[6]
+                quantity = row[7]
+                print(comment)
+                cursor.execute(
+                    f"INSERT INTO search_remains(comment,code,article,party,title,base_unit,project,quantity)"
+                    f" VALUES  ('{comment}', '{code}','{article}',"
+                    f"'{party}','{title}','{base_unit}','{project}','{quantity}')")
+            print('База успешно записана')
+    except:
+        print("Ошибка в загрузге данных в базу")
+
+
+
 
 
 def delete_data_table():
     with sqlite3.connect(db_path) as con:
         cursor = con.cursor()
         print("Подключен к SQLite готов к удалению")
-        cursor.execute("""DELETE FROM maxfind_remains;""")
+        cursor.execute("""DELETE FROM search_remains;""")
         print('Все данные удалены')

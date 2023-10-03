@@ -16,4 +16,4 @@ class Remains(models.Model):
 
 
 class Document(models.Model):
-    document = models.FileField(upload_to='enterprise/doc/base', verbose_name='Выберите файл')
+    document = models.FileField(upload_to='document', verbose_name='Выберите файл')

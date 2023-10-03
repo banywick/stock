@@ -19,7 +19,12 @@ def update_load_document(request):
     if request.method == 'POST' and request.FILES:
         doc = DocumentForm(request.POST, request.FILES)
         if doc.is_valid():
-            return render(request, 'update.html', {'title': 'Обновление базы', 'menu': menu, 'doc': doc})
+            doc.save()
+            save_data_db()
+            print('Удалили все данные')
+
+
+
 
     return render(request, 'update.html', {'title': 'Обновление базы', 'menu': menu, 'doc': doc})
 

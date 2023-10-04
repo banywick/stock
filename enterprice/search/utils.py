@@ -6,7 +6,6 @@ from pathlib import Path
 db_path = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'db.sqlite3')
 media_path = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
 
-
 menu = [{'title': 'Главная', 'url_name': 'main'},
         {'title': 'Обновить базу', 'url_name': 'update'}]
 
@@ -28,32 +27,29 @@ def get_doc_name():  # Функция для получения имени по�
 
 def save_data_db():
     try:
+        sp = []
         file_name = Path(media_path, get_doc_name())
         print(f'его путь ____{file_name}')
         print(f'обработал документ >>>>>>>>> {file_name}')
         book = openpyxl.load_workbook(file_name, read_only=True)
         sheet = book.active
         print(f'Добрался до книги <<<< {book}')
+        for row in sheet.iter_rows(min_row=15, max_row=6500, min_col=12, max_col=19, values_only=True):
+            sp.append(row)
+        print('Получил список картежей всей книги')
         with sqlite3.connect(db_path) as con:
             print('Открыл соединение с базой данных')
             cursor = con.cursor()
             print('Соединение с базой данных успешн')
-            for row in sheet.iter_rows(min_row=15, max_row=1000, min_col=12, max_col=19, values_only=True):
-                comment = row[0]
-                code = row[1]
-                article = row[2]
-                party = row[3]
-                title = row[4]
-                base_unit = row[5]
-                project = row[6]
-                quantity = row[7]
-                cursor.execute(
-                    f"INSERT INTO search_remains(comment,code,article,party,title,base_unit,project,quantity)"
-                    f" VALUES  ('{comment}','{code}','{article}',"
-                    f"'{party}','{title}','{base_unit}','{project}','{quantity}')")
-        print('База успешно записана соединение закрыто')
+            cursor.executemany("""INSERT INTO search_remains(
+            'comment','code','article','party','title','base_unit','project','quantity')
+            VALUES (?,?,?,?,?,?,?,?)""", sp)
+            print('База успешно записана соединение закрыто')
     except IOError as e:
         print(f"Ошибка в загрузге данных в базу {e}")
+
+
+#save_data_db()
 
 
 # save_data_db()

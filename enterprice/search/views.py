@@ -24,4 +24,4 @@ def update_load_document(request):
             print('Данные загружены')
             return redirect('main')
 
-    return render(request, 'update.html', {'title': 'Обновление базы', 'menu': menu, 'doc': doc})
+    return render(request, 'update.html', {'title': 'Обновление базы', 'menu': menu, 'doc':doc})

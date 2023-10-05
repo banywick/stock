@@ -9,8 +9,8 @@ def get_access(request):
 
 
 def get_main_page(request):
-    remains = Remains.objects.all()
-    return render(request, 'base.html', {'title': 'Главная Страница', 'menu': menu, 'remains': remains})
+
+    return render(request, 'base.html', {'title': 'Главная Страница', 'menu': menu})
 
 
 def update_load_document(request):
@@ -23,5 +23,9 @@ def update_load_document(request):
             save_data_db()
             print('Данные загружены')
             return redirect('main')
-
     return render(request, 'update.html', {'title': 'Обновление базы', 'menu': menu, 'doc':doc})
+
+
+def search_engine(request):
+    remains = Remains.objects.all()
+    return render(request, 'search.html',  {'title': 'Поиск', 'menu': menu, 'remains': remains})

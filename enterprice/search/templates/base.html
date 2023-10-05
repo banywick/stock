@@ -1,56 +1,34 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+<div class="wrapper">
+    <header>
+        <nav class="header_nav">
+            <div>
+                <img src="" alt="Картинка!!!">
+            </div>
+                 {% for m in menu %}
+                <div><a href="{% url m.url_name %}">{{ m.title }}</a></div>
+                {% endfor %}
+        </nav>
+    </header>
 
-<body>
-{% block menu %}
-
-<h2 style="text-align: center" ;>эта страница бэйс!! тут будут разные ссылки и контент в шапке</h2>
-{% for m in menu %}
-<li><a href="{% url m.url_name %}">{{ m.title }}</a></li>
-{% endfor %}
-
-{% endblock %}
-<table>
-<tr>
-  <th>Company</th>
-  <th>Q1</th>
-  <th>Q2</th>
-  <th>Q3</th>
-  <th>Q4</th>
-  <th>Q4</th>
-  <th>Q4</th>
-  <th>Q4</th>
-
-</tr>
-{% for r in remains %}
-<tr>
-   <td>{{r.comment}}</td>
-   <td>{{r.code}}</td>
-   <td>{{r.article}}</td>
-   <td>{{r.party}}</td>
-   <td>{{r.title}}</td>
-   <td>{{r.base_unit}}</td>
-   <td>{{r.project}}</td>
-   <td>{{r.quantity}}</td>
-</tr>
-{% endfor %}
-</table>
+</div>
+    <body>
 
 
 
 
+    {% block update_page %}
+    {% endblock %}
 
-{% block update_page %}
-{% endblock %}
-
-{% block search %}
-{% endblock %}
+    {% block search %}
+    {% endblock %}
 
 </body>
 </html>

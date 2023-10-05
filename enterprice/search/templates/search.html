@@ -1,12 +1,39 @@
 {% extends 'base.html' %}
 <title>{{ title }}</title>
 {% block search %}
-
-
-<h1>Должен быть список всех товаров</h1>
-
-
-
-
-
+<div class="input_wrapper">
+    <div class="input_value">
+        <form action="">
+            {% csrf_token %}
+            <label for="">Поиск</label>
+            <input type="text" placeholder="Введите значение">
+        </form>
+    </div>
+</div>
+<table>
+    <tr>
+        <th>Коментарий</th>
+        <th>Код</th>
+        <th>Артикул</th>
+        <th>Партия</th>
+        <th>Номенклатура</th>
+        <th>Единица</th>
+        <th>Проект</th>
+        <th>Количество</th>
+    </tr>
+    {% for r in remains %}
+    <tr>
+        <td>{{r.comment}}</td>
+        <td>{{r.code}}</td>
+        <td>{{r.article}}</td>
+        <td>{{r.party}}</td>
+        <td><a class="table_href" href="">{{r.title}}</a></td>
+        <td>{{r.base_unit}}</td>
+        <td>{{r.project}}</td>
+        <td>{{r.quantity}}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}
+
+

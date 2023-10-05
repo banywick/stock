@@ -7,6 +7,7 @@ db_path = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'db.
 media_path = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
 
 menu = [{'title': 'Главная', 'url_name': 'main'},
+        {'title': 'Поиск','url_name': 'find'},
         {'title': 'Обновить базу', 'url_name': 'update'}]
 
 
@@ -60,4 +61,4 @@ def delete_data_table():
         print("Подключен к SQLite готов к удалению")
         cursor.execute("""DELETE FROM search_remains;""")
         print('Все данные удалены')
-# delete_data_table()
+#delete_data_table()

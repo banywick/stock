@@ -8,4 +8,5 @@ class DocumentForm(forms.ModelForm):
         fields = '__all__'
 
 
-
+class InputValue(forms.Form):
+    input = forms.CharField(max_length=50)

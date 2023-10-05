@@ -3,10 +3,9 @@
 {% block search %}
 <div class="input_wrapper">
     <div class="input_value">
-        <form action="">
+        <form action="" method="POST">
             {% csrf_token %}
-            <label for="">Поиск</label>
-            <input type="text" placeholder="Введите значение">
+            {{ form.as_p }}
         </form>
     </div>
 </div>
@@ -27,7 +26,7 @@
         <td>{{r.code}}</td>
         <td>{{r.article}}</td>
         <td>{{r.party}}</td>
-        <td><a class="table_href" href="">{{r.title}}</a></td>
+        <td>{{r.title}}</td>
         <td>{{r.base_unit}}</td>
         <td>{{r.project}}</td>
         <td>{{r.quantity}}</td>

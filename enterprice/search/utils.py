@@ -35,7 +35,7 @@ def save_data_db():
         book = openpyxl.load_workbook(file_name, read_only=True)
         sheet = book.active
         print(f'Добрался до книги <<<< {book}')
-        for row in sheet.iter_rows(min_row=15, max_row=300, min_col=12, max_col=19, values_only=True):
+        for row in sheet.iter_rows(min_row=15, max_row=61900, min_col=12, max_col=19, values_only=True):
             sp.append(row)
         print('Получил список картежей всей книги')
         with sqlite3.connect(db_path) as con:

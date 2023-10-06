@@ -1,38 +1,52 @@
 {% extends 'base.html' %}
 <title>{{ title }}</title>
 {% block search %}
-<div class="input_wrapper">
-    <div class="input_value">
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-        </form>
+    <div class="input_wrapper">
+        <div class="input_value">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </form>
+        </div>
     </div>
-</div>
-<table>
-    <tr>
-        <th>Коментарий</th>
-        <th>Код</th>
-        <th>Артикул</th>
-        <th>Партия</th>
-        <th>Номенклатура</th>
-        <th>Единица</th>
-        <th>Проект</th>
-        <th>Количество</th>
-    </tr>
-    {% for r in remains %}
-    <tr>
-        <td>{{r.comment}}</td>
-        <td>{{r.code}}</td>
-        <td>{{r.article}}</td>
-        <td>{{r.party}}</td>
-        <td>{{r.title}}</td>
-        <td>{{r.base_unit}}</td>
-        <td>{{r.project}}</td>
-        <td>{{r.quantity}}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <div class="container">
+        <div class="table_div">
+            <table>
+                <tr>
+                    <th>Коментарий</th>
+                    <th>Код</th>
+                    <th>aАртикул</th>
+                    <th>Партия</th>
+                    <th>Номенклатура</th>
+                    <th>Единица</th>
+                    <th>Проект</th>
+                    <th>Количество</th>
+                </tr>
+                {% for r in remains %}
+                    <tr>
+                        <td>{{ r.comment }}</td>
+                        <td>{{ r.code }}</td>
+                        <td>{{ r.article }}</td>
+                        <td>{{ r.party }}</td>
+                        <td><a href="{% url 'details' %}">{{ r.title }}</a></td>
+                        <td>{{ r.base_unit }}</td>
+                        <td>{{ r.project }}</td>
+                        <td>{{ r.quantity }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="details_div">
+            Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее
+            осмысленного текста рыбы на русском языке, а начинающему оратору отточить навык публичных выступлений в
+            домашних условиях. При создании генератора мы использовали небезизвестный универсальный код речей. Текст
+            генерируется абзацами случайным образом от двух до десяти предложений в абзаце, что позволяет сделать текст
+            более привлекательным и живым для визуально-слухового восприятия.
+            По своей сути рыбатекст является альтернативой традиционному lorem ipsum, который вызывает у некторых людей
+            недоумение при попытках прочитать рыбу текст. В отличии от lorem ipsum, текст рыба на русском языке наполнит
+            любой макет непонятным смыслом и придаст неповторимый колорит советских времен.
+        </div>
+    </div>
 {% endblock %}
 
 

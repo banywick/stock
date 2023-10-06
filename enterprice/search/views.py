@@ -42,12 +42,12 @@ def search_engine(request):
         remains = Remains.objects.filter(
             Q(title__icontains=d[0])).filter(Q(title__icontains=d.get(1))).filter(
             Q(title__icontains=d.get(2))) | Remains.objects.filter(article__contains=user_value)
-
         context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form}
         return render(request, 'search.html', context=context)
+
     return render(request, 'search.html', {'title': 'Поиск', 'menu': menu, 'form': form})
 
 
-def get_details_product(request):
-
-    return render(request, 'details.html', {'title': 'детали'})
+def get_details_product(request, id_prod):
+    det = Remains.objects.filter(id=str(id_prod))
+    return render(request, 'details.html', {'title': 'детали', 'det': det})

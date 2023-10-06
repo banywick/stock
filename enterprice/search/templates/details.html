@@ -3,5 +3,12 @@
 {% block detail %}
 
     <a href="{% url 'find' %}">Назад</a>
-
+     <div class="details_div">
+         Детализация
+          {% for d in det %}
+              {{ d.title }}
+              {{ d.article }}
+              {{ d.count }}
+          {% endfor %}
+         </div>
 {% endblock %}

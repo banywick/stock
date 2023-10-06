@@ -6,5 +6,6 @@ urlpatterns = [
     path('main/', get_main_page, name='main'),
     path('update/', update_load_document, name='update'),
     path('find/', search_engine, name='find'),
-    path('details/', get_details_product, name='details')
+    path('details/<int:id_prod>', get_details_product, name='details')
+
 ]

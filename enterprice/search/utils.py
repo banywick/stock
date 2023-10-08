@@ -7,7 +7,7 @@ db_path = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'db.
 media_path = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
 
 menu = [{'title': 'Главная', 'url_name': 'main'},
-        {'title': 'Поиск','url_name': 'find'},
+        {'title': 'Поиск', 'url_name': 'find'},
         {'title': 'Обновить базу', 'url_name': 'update'}]
 
 
@@ -19,8 +19,8 @@ def get_doc_name():  # Функция для получения имени по�
             cursor.execute("""SELECT * FROM search_document ORDER BY id DESC LIMIT 1;""")
         doc = cursor.fetchone()
         return doc[1]
-    except:
-        print(f'ошибка в получении имени >>> ')
+    except IOError as e:
+        print(f'ошибка в получении имени >>> {e}')
 
 
 # print(get_doc_name())
@@ -47,13 +47,11 @@ def save_data_db():
             VALUES (?,?,?,?,?,?,?,?)""", sp)
             print('База успешно записана соединение закрыто')
     except IOError as e:
-            print(f"Ошибка в загрузге данных в базу {e}")
-
-
-#save_data_db()
+        print(f"Ошибка в загрузге данных в базу {e}")
 
 
 # save_data_db()
+
 
 def delete_data_table():
     with sqlite3.connect(db_path) as con:
@@ -61,4 +59,8 @@ def delete_data_table():
         print("Подключен к SQLite готов к удалению")
         cursor.execute("""DELETE FROM search_remains;""")
         print('Все данные удалены')
-#delete_data_table()
+
+
+# delete_data_table()
+
+

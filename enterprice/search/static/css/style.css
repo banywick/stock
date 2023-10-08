@@ -1,14 +1,12 @@
+.table_div{
+    max-width: 100%;
+    height: 50px;
+}
+
 .details_div{
-
-    max-width: 500px;
-
-
-
+    align-items: center;
 }
-.container{
-    display: flex;
 
-}
 .wrapper header {
     height: 50px;
     border: 2px solid blueviolet;
@@ -27,13 +25,14 @@
 
 .input_wrapper {
     height: 50px;
+    margin-bottom: 40px;
+    display: flex;
 }
 
 .input_value{
     justify-content: left;
 }
 table {
-
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 14px;
     border-radius: 10px;
@@ -72,6 +71,14 @@ td {
     background: #F8E391;
 }
 
+td a{
+    text-decoration: none;
+    color: black;
+}
+
+td a:hover{
+    background: rgba(32, 48, 211, 0.55);
+}
 tr:last-child td:first-child {
     border-radius: 0 0 0 10px;
 }

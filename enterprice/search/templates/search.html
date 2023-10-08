@@ -3,16 +3,16 @@
 
 <title>{{ title }}</title>
 {% block search %}
-    <div class="input_wrapper">
-        <div class="input_value">
-            <form action="" method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-            </form>
-        </div>
+<div class="input_wrapper">
+    <div class="input_value">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button>Найти</button>
+        </form>
     </div>
-    <div class="container">
-        <div class="table_div">
+</div>
+<div class="table_div">
             <table>
                 <tr>
                     <th>Коментарий</th>
@@ -37,11 +37,14 @@
                     </tr>
                 {% endfor %}
             </table>
+            {{ e_code }}
+            {{ e_art_title }}
+
+
         </div>
 
-    </div>
-        {% block detail %}
-        {% endblock %}
+{% block detail %}
+{% endblock %}
 
 {% endblock %}
 

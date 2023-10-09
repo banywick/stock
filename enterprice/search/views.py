@@ -1,9 +1,16 @@
 from django.db.models import Q
-from django.db.models.functions import Cast
 from django.shortcuts import render, redirect
 from .forms import DocumentForm, InputValue
 from .utils import save_data_db, delete_data_table, menu
 from .models import Remains
+
+choice_project = []
+
+
+def clear_sort(request):
+    if request.method == 'POST':
+        choice_project.clear()
+        return redirect('find')
 
 
 def get_access(request):
@@ -37,9 +44,9 @@ def search_engine(request):
             remains = Remains.objects.filter(code__endswith=user_value[1:])
             if not remains.exists():
                 context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
-                           'e_code': 'Такой код не найден'}
+                           'e_code': 'Такой код не найден', 'project': choice_project}
                 return render(request, 'search.html', context=context)
-            context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form}
+            context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form, 'project': choice_project}
             return render(request, 'search.html', context=context)
         else:
             values = str(user_value).split(' ')
@@ -54,13 +61,14 @@ def search_engine(request):
                 Q(title__icontains=d.get(2))) | Remains.objects.filter(article__contains=user_value)
             if not remains.exists():
                 context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
-                           'e_art_title': 'Товар не найден'}
+                           'e_art_title': 'Товар не найден', 'project': choice_project}
+
                 return render(request, 'search.html', context=context)
             else:
-                context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form}
+                context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form, 'project': choice_project}
                 return render(request, 'search.html', context=context)
 
-    return render(request, 'search.html', {'title': 'Поиск', 'menu': menu, 'form': form})
+    return render(request, 'search.html', {'title': 'Поиск', 'menu': menu, 'form': form, 'project': choice_project})
 
 
 def get_details_product(request, id):
@@ -75,3 +83,14 @@ def get_details_product(request, id):
     sum_art = f'{sum_art}  {unit}'
 
     return render(request, 'details.html', {'title': 'детали', 'det': det, 'sum': sum_art})
+
+
+def choice_projects(request):
+    if request.method == 'POST':
+        projects = request.POST.getlist('data_project')
+        for p in projects:
+            choice_project.append(p)
+        return redirect('find')
+    all_project = Remains.objects.values_list('project', flat=True).distinct()
+    context = {'title': 'Проект', 'all_project': all_project}
+    return render(request, 'choice_project.html', context)

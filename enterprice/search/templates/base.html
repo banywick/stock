@@ -6,33 +6,51 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+<body>
 <div class="wrapper">
     <header>
         <nav class="header_nav">
             <div>
                 <img src="" alt="Картинка!!!">
             </div>
-                 {% for m in menu %}
+            {% for m in menu %}
                 <div><a href="{% url m.url_name %}">{{ m.title }}</a></div>
-                {% endfor %}
+            {% endfor %}
         </nav>
     </header>
 
+    <a href="{% url 'choice' %}">Выбрать проект</a>
+    <h3>Выбранные проекты Для сортировки</h3>
+    {% for p in project %}
+        <p style="color: coral">{{ p }}</p>
+    {% endfor %}
+
+    <form action="{% url 'clear_test' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit"> Отчистить</button>
+    </form>
 </div>
-    <body>
 
 
 
 
-    {% block update_page %}
-    {% endblock %}
-
-    {% block search %}
-    {% endblock %}
 
 
-    {% block detail %}
-    {% endblock %}
+{% block choice %}
+{% endblock %}
+
+{% block detail %}
+{% endblock %}
+
+{% block update_page %}
+{% endblock %}
+
+
+
+{% block search %}
+
+{% endblock %}
+
 
 </body>
 </html>

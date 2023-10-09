@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+<title>{{ title }}</title>
+
+{% block choice %}
+     <div class="select_project">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <select name="data_project"  multiple size="50">
+                {% for p in all_project %}
+                    <option value="{{ p }}">{{ p }}</option>
+                {% endfor %}
+            </select>
+             <input type="submit" value="Выбрать">
+        </form>
+    </div>
+{% endblock %}

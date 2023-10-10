@@ -12,6 +12,16 @@
         </form>
 
     </div>
+   <a href="{% url 'choice' %}">Выбрать проект</a>
+    <h3>Выбранные проекты Для сортировки</h3>
+    {% for p in project %}
+        <p style="color: coral">{{ p }}</p><br>
+    {% endfor %}
+
+    <form action="{% url 'clear' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit"> Отчистить</button>
+    </form>
 
 
 </div>

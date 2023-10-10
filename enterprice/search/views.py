@@ -54,30 +54,19 @@ def search_engine(request):
             projects_q = Q()  # Динамическое создание Q по выбранным проектам
             for value in choice_project.values():
                 projects_q |= Q(**{'project': value})
-
-            values = str(user_send_value_input).split(' ')
-
-            # for i in enumerate(values):
-            #     print(i)
-            #     d[i[0]] = i[1]
-            # if not d.get(1):
-            #     d[1] = ''
-            # if not d.get(2):
-            #     d[2] = ''
-
-            titles_q = {i: v for i, v in enumerate(values)}  # Перевел список в дикт с ключами цифрами
-            print(titles_q)
-            remains = Remains.objects.filter(Q(title__icontains=titles_q.get(0))).filter(
-                Q(title__icontains=titles_q.get(1)) | '')
-
-            # remains = Remains.objects.filter(projects_q).filter(Q(title__icontains=d[0])).filter(
-            #     Q(title__icontains=d.get(1))).filter(
-            #     Q(title__icontains=d.get(2))) | Remains.objects.filter(article__contains=user_send_value_input)
-
+            values = str(user_send_value_input).split(' ') # сбор значений с инпута
+            for i in enumerate(values):
+                d[i[0]] = i[1]
+            if not d.get(1):
+                d[1] = ''
+            if not d.get(2):
+                d[2] = ''
+            remains = Remains.objects.filter(projects_q).filter(Q(title__icontains=d[0])).filter(
+                Q(title__icontains=d.get(1))).filter(
+                Q(title__icontains=d.get(2))) | Remains.objects.filter(article__contains=user_send_value_input)
             if not remains.exists():  # если ничего не найдено из нескольких значений в инпуте
                 context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
                            'e_art_title': 'Товар не найден', 'project': choice_project.values()}
-
                 return render(request, 'search.html', context=context)
             else:
                 context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,

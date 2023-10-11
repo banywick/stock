@@ -14,7 +14,7 @@ def clear_sort(request):
 
 
 def get_access(request):
-    return render(request, 'test_page.html')
+    return render(request, 'registration.html')
 
 
 def get_main_page(request):

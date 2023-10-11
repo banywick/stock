@@ -1,68 +1,93 @@
-<!doctype html>
+<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/search_style.css' %}">
+    <title>{{ title }}</title>
 </head>
 <body>
-<title>{{ title }}</title>
-<div class="input_wrapper">
-    <div class="input_value">
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button>Найти</button>
-        </form>
+<div class="wrapper">
+    <header class="header">
+        <div class="header_logo">
+            <img src="{% static 'img/logo.jpg' %}" alt="">
+        </div>
+        <div class="header_find">
+            <form class="form_input" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
 
-    </div>
-   <a href="{% url 'choice' %}">Выбрать проект</a>
-    <h3>Выбранные проекты Для сортировки</h3>
-    {% for p in project %}
-        <p style="color: coral">{{ p }}</p><br>
-    {% endfor %}
+            </form>
+        </div>
+        <div class="header_button_reset_filter_wrapper">
+            <div class="header_button_filter">
+                <a href="{% url 'choice' %}">Выбрать проект</a>
+            </div>
+            <div class="header_button_reset">
+                <form action="{% url 'clear' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Очистить">
 
-    <form action="{% url 'clear' %}" method="POST">
-        {% csrf_token %}
-        <button type="submit"> Отчистить</button>
-    </form>
-
-
-</div>
-<div class="table_div">
-            <table>
-                <tr>
-                    <th>Коментарий</th>
-                    <th>Код</th>
-                    <th>aАртикул</th>
-                    <th>Партия</th>
-                    <th>Номенклатура</th>
-                    <th>Единица</th>
-                    <th>Проект</th>
-                    <th>Количество</th>
-                </tr>
-                {% for r in remains %}
-                    <tr>
-                        <td>{{ r.comment }}</td>
-                        <td>{{ r.code }}</td>
-                        <td>{{ r.article }}</td>
-                        <td>{{ r.party }}</td>
-                        <td><a href="{% url 'details' r.id %}">{{ r.title }}</a></td>
-                        <td>{{ r.base_unit }}</td>
-                        <td>{{ r.project }}</td>
-                        <td>{{ r.quantity }}</td>
-                    </tr>
+                </form>
+            </div>
+        </div>
+        <div class="header_list_sort">
+            <ul>
+                Сотрировка по :
+                <hr>
+                {% for p in project %}
+                   <li>{{ p }}</li>
                 {% endfor %}
-            </table>
-            {{ e_code }}
-            {{ e_art_title }}
+            </ul>
+        </div>
+        <div class="header_user_account">
+            <h3>Добро пожаловать!</h3>
+            <p>User</p>
+        </div>
+    </header>
+    <div class="container_left_center">
+        <div class="left_colum">
+            <h2>Меню</h2>
+            <hr>
+            {% for m in menu %}
+                <ul>
+                    <li> <a href="{% url m.url_name %}">{{ m.title }}</a></li>
+                </ul>
+            {% endfor %}
+
+
 
 
         </div>
+        <div class="center_colum">
+            <div class="table_div">
+                <table>
+                    <tr>
+                        <th>Коментарий</th>
+                        <th>Код</th>
+                        <th>Артикул</th>
+                        <th>Партия</th>
+                        <th>Номенклатура</th>
+                        <th>Единица</th>
+                        <th>Проект</th>
+                        <th>Количество</th>
+                    </tr>
+                    {% for r in remains %}
+                        <tr>
+                            <td>{{ r.comment }}</td>
+                            <td>{{ r.code }}</td>
+                            <td>{{ r.article }}</td>
+                            <td>{{ r.party }}</td>
+                            <td><a href="{% url 'details' r.id %}">{{ r.title }}</a></td>
+                            <td>{{ r.base_unit }}</td>
+                            <td>{{ r.project }}</td>
+                            <td>{{ r.quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
-
-

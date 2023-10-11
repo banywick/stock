@@ -22,7 +22,7 @@
             <div class="header_button_filter">
                 <a href="#">Фильтр</a>
             </div>
-            <div class="header_filter_button_reset">
+            <div class="header_button_reset">
                 <a href="#">Очистить</a>
             </div>
         </div>
@@ -41,8 +41,37 @@
             <p>User</p>
         </div>
     </header>
-    <div class="left_colum">
-        menu
+    <div class="container_left_center">
+        <div class="left_colum">
+        <h2>Меню</h2>
+        </div>
+        <div class="center_colum">
+            <div class="table_div">
+            <table>
+                <tr>
+                    <th>Коментарий</th>
+                    <th>Код</th>
+                    <th>Артикул</th>
+                    <th>Партия</th>
+                    <th>Номенклатура</th>
+                    <th>Единица</th>
+                    <th>Проект</th>
+                    <th>Количество</th>
+                </tr>
+                {% for r in remains %}
+                    <tr>
+                        <td>{{ r.comment }}</td>
+                        <td>{{ r.code }}</td>
+                        <td>{{ r.article }}</td>
+                        <td>{{ r.party }}</td>
+                        <td><a href="{% url 'details' r.id %}">{{ r.title }}</a></td>
+                        <td>{{ r.base_unit }}</td>
+                        <td>{{ r.project }}</td>
+                        <td>{{ r.quantity }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 

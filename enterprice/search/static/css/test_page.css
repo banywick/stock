@@ -1,27 +1,28 @@
 .header {
     background-image: url("../img/2.jpg");
-    position: fixed;
     width: 100%;
     height: 150px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     padding-left: 5px;
     padding-top: 5px;
-    border-radius: 20px;
+    justify-content: space-between;
+
+
 }
 
 .header_logo img {
     height: 140px;
     width: 200px;
     border-radius: 20px;
-    margin-right: 100px;
+
 }
 
 .header_button_reset_filter_wrapper {
     display: inline;
-    margin-left: 100px;
     text-align: center;
     text-decoration: none;
+
 }
 
 
@@ -37,45 +38,51 @@
     border: #2D2020 solid 2px;
     width: 100px;
     margin-bottom: 10px;
+
 }
 
 .header_button_filter:hover {
     border: #3eef2b solid 3px;
 }
 
-.header_filter_button_reset {
+.header_button_reset {
     background: #ff5057e6;
     border: #2D2020 solid 2px;
     width: 100px;
 }
 
-.header_filter_button_reset:hover {
+.header_button_reset:hover {
     border: #3eef2b solid 3px;
 }
 
 .header_list_sort {
-    margin-left: 200px;
+
     height: 140px;
     width: 200px;
 }
 
 .header_user_account {
-
-    margin-left: 500px;
     border-radius: 10px;
 }
 
 .left_colum {
-    background: coral;
-    height: 1000px;
-    width: 200px;
     background-image: url("../img/2.jpg");
-    position: fixed;
+    flex: 0 0 200px;
+    height: 81vh;
+
 }
 
+.center_colum {
+    flex: 1 1 auto;
+    max-height: 81vh;
+    overflow: auto;
+    border-left: 2px solid black ;
+    border-top: 2px solid black;
 
-.wrapper {
-    flex-direction: column;
+}
+
+.container_left_center {
+    display: flex;
 }
 
 
@@ -121,4 +128,60 @@ button:before {
 }
 
 
+table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    border-radius: 10px;
+    border-spacing: 0;
+    text-align: center;
+    width: 100%;
+}
 
+th {
+    background: #c58787;
+    color: #223033;
+    text-shadow: 0 1px 1px #2D2020;
+    padding: 10px 20px;
+}
+
+th, td {
+
+    border: 1px solid black;
+}
+
+th:first-child, td:first-child {
+    text-align: left;
+}
+
+
+
+th:last-child {
+    border-top-right-radius: 10px;
+    border-right: none;
+}
+
+td {
+    padding: 10px 20px;
+    background: #F8E391;
+}
+
+td a {
+    text-decoration: none;
+    color: black;
+}
+
+td a:hover {
+    background: rgba(32, 48, 211, 0.55);
+}
+
+tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+}
+
+tr:last-child td:last-child {
+    border-radius: 0 0 10px 0;
+}
+
+tr td:last-child {
+    border-right: none;
+}

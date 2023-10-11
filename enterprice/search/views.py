@@ -14,11 +14,11 @@ def clear_sort(request):
 
 
 def get_access(request):
-    return render(request, 'registration.html')
+    return render(request, 'test_page.html')
 
 
 def get_main_page(request):
-    return render(request, 'base.html', {'title': 'Главная Страница', 'menu': menu})
+    return render(request, 'main.html', {'title': 'Главная Страница', 'menu': menu})
 
 
 def update_load_document(request):

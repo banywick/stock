@@ -82,13 +82,14 @@ def get_details_product(request, id):
     for d in detail:
         article = d.article
         unit = d.base_unit
-    det = Remains.objects.filter(article__contains=article)
+        project = d.project
+    det = Remains.objects.filter(article=article)
     sum_art = 0
     for d in det:
         sum_art += d.quantity
     sum_art = f'{sum_art}  {unit}'
 
-    return render(request, 'details.html', {'title': 'детали', 'det': det, 'sum': sum_art})
+    return render(request, 'details.html', {'title': 'детали', 'det': det, 'sum': sum_art, 'art':article})
 
 
 def choice_projects(request):
@@ -96,7 +97,9 @@ def choice_projects(request):
         projects = request.POST.getlist('data_project')
         for i in enumerate(projects):
             choice_project[i[0]] = i[1]
+        print(request.POST)
         return redirect('find')
     all_project = Remains.objects.values_list('project', flat=True).distinct()
     context = {'title': 'Проект', 'all_project': all_project}
+
     return render(request, 'choice_project.html', context)

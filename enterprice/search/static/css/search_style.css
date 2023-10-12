@@ -19,9 +19,11 @@
 }
 
 .header_button_reset_filter_wrapper {
-    display: inline;
+
+    display: block;
     text-align: center;
     text-decoration: none;
+
 
 }
 
@@ -34,29 +36,36 @@
 }
 
 .header_button_filter {
-    background: #fff350;
-    border: #2D2020 solid 2px;
-    width: 100px;
+    text-decoration: none;
+    text-align: center;
+    padding: 9px 12px;
+    border-radius: 15px;
+    font: 14px Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #1c511c;
+    background: #21eb3b70;
+    box-shadow: inset 0px 5px 15px #9d634f;
     margin-bottom: 10px;
-    border-radius: 10px;
+
 
 }
 
-.header_button_filter:hover {
-    border: #3eef2b solid 3px;
-}
 
 .header_button_reset input {
-    background: #ff5057e6;
-    border: #2D2020 solid 2px;
-    width: 100px;
-    height: 30px;
-    color: #000000;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    padding: 9px 12px;
+    border-radius: 15px;
+    font: 14px Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #1c511c;
+    background: rgba(212, 235, 33, 0.92);
+    box-shadow: inset 0px 5px 15px #9d634f;
+
+
 }
 
-.header_button_reset:hover {
-    border: #3eef2b solid 3px;
-}
 
 .header_list_sort {
 
@@ -71,13 +80,13 @@
 .left_colum {
     background-image: url("../img/2.jpg");
     flex: 0 0 200px;
-    height: 81vh;
+    height: 85vh;
 
 }
 
 .center_colum {
     flex: 1 1 auto;
-    max-height: 81vh;
+    max-height: 85vh;
     overflow: auto;
     border-left: 2px solid black;
     border-top: 2px solid black;
@@ -90,7 +99,7 @@
 
 .header_list_sort {
     max-height: 16vh;
-    overflow-x:hidden ;
+    overflow-x: hidden;
 
 }
 
@@ -99,10 +108,10 @@
 
 
 }
-.left_colum ul li a{
-     text-decoration: none;
-}
 
+.left_colum ul li a {
+    text-decoration: none;
+}
 
 
 
@@ -126,26 +135,7 @@ input {
     border-radius: 5px;
     outline: none;
     background: #fcfcfc;
-    color: #9E9C9C;
-}
 
-button {
-    position: absolute;
-    top: 0;
-    right: 0px;
-    width: 42px;
-    height: 42px;
-    border: none;
-    background: #565656;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-}
-
-button:before {
-    content: "\f002";
-    font-family: FontAwesome;
-    font-size: 16px;
-    color: #F9F0DA;
 }
 
 
@@ -158,10 +148,10 @@ table {
     width: 100%;
 }
 
+
 th {
     background: #878cc5;
-    color: #223033;
-    text-shadow: 0 1px 1px #b74bf5;
+    color: #0e0e0e;
     padding: 10px 20px;
 }
 
@@ -191,7 +181,7 @@ td a {
 }
 
 td a:hover {
-    background: rgba(32, 48, 211, 0.55);
+    color: rgba(226, 43, 43, 0.84);
 }
 
 tr:last-child td:first-child {

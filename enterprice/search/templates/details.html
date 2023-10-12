@@ -1,28 +1,34 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/details_style.css' %}">
     <title>{{ title }}</title>
 </head>
+<header class="header">
+    <div class="header_logo">
+        <img src="{% static 'img/logo.jpg' %}" alt="">
+    </div>
+</header>
 <body>
-
-    <div class="details_div">
-        Детализация
+<div class="main_wrapper">
+    <div class="details_cart">
+        <h3>Артикул</h3>
+         <h2> {{ art }}</h2>
+        <hr>
+        <h4>Проекты</h4>
         {% for d in det %}
-            <ul style="text-align: center">
-                <li>
-                    {{ d.title }} <br>
-                    {{ d.article }} <br>
-                    {{ d.count }} <br>
-                    {{ d.project }} <br>
-                    {{ d.quantity }} <br>
-                </li>
+            <ul>
+                <li> {{ d.project }}</li>
+                <li> {{ d.quantity }}  {{ d.base_unit }}</li>
             </ul>
         {% endfor %}
-     <h2>Общая сумма {{ sum }}</h2><br>
+        <h3>Общая сумма : {{ sum }}</h3>
     </div>
+</div>
 </body>
 </html>

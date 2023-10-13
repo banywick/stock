@@ -16,8 +16,8 @@
             <form class="form_input" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-
             </form>
+            Информационная база : {{ file_name }}
         </div>
         <div class="header_button_reset_filter_wrapper">
             <div class="header_button_filter">
@@ -42,7 +42,8 @@
         </div>
         <div class="header_user_account">
             <h3>Добро пожаловать!</h3>
-            <p>User</p>
+            <p>{{ username }}</p>
+            <a href="{% url 'login' %}">Войти</a>
         </div>
     </header>
     <div class="container_left_center">
@@ -84,6 +85,8 @@
                             <td>{{ r.quantity }}</td>
                         </tr>
                     {% endfor %}
+                      {{ e_code }}
+                    {{ e_art_title }}
                 </table>
             </div>
         </div>

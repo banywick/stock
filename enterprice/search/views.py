@@ -1,8 +1,8 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from .forms import DocumentForm, InputValue
-from .utils import save_data_db, delete_data_table, menu
-from .models import Remains
+from .utils import save_data_db, delete_data_table, get_doc_name
+from .models import Remains, RemainsManager
 
 choice_project = dict()
 
@@ -25,13 +25,15 @@ def update_load_document(request):
     doc = DocumentForm()
     if request.method == 'POST' and request.FILES:
         doc = DocumentForm(request.POST, request.FILES)
+        file_name = request.FILES['document'].name  # Имя загруженного документа
+        request.session['file_name'] = file_name  # поместил имя в сессию для передачи в контекст поисковика
         if doc.is_valid():
             doc.save()
             delete_data_table()
             save_data_db()
             print('Данные загружены')
             return redirect('find')
-    return render(request, 'update.html', {'title': 'Обновление базы', 'menu': menu, 'doc': doc})
+    return render(request, 'update.html', {'title': 'Обновление базы', 'doc': doc})
 
 
 def search_engine(request):
@@ -40,41 +42,36 @@ def search_engine(request):
         d = {}
         form = InputValue(request.POST)
         user_send_value_input = request.POST['input']
+        remains = RemainsManager()
+        context = remains.user_find_code(user_send_value_input,form)
+        return render(request, 'search.html', context=context)
 
-        if str(user_send_value_input).startswith('*'):  # поиск по арикулу
-            remains = Remains.objects.filter(code__endswith=user_send_value_input[1:])
-            if not remains.exists():  # если кверисет пустой, ничего не найдено
-                context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
-                           'e_code': 'Такой код не найден', 'project': choice_project.values()}
-                return render(request, 'search.html', context=context)
-            context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
-                       'project': choice_project.values()}
-            return render(request, 'search.html', context=context)
-        else:  # Формируется 3 Q объекта. В импуте значения через пробел
-            projects_q = Q()  # Динамическое создание Q по выбранным проектам
-            for value in choice_project.values():
-                projects_q |= Q(**{'project': value})
-            values = str(user_send_value_input).split(' ') # сбор значений с инпута
-            for i in enumerate(values):
-                d[i[0]] = i[1]
-            if not d.get(1):
-                d[1] = ''
-            if not d.get(2):
-                d[2] = ''
-            remains = Remains.objects.filter(projects_q).filter(Q(title__icontains=d[0])).filter(
-                Q(title__icontains=d.get(1))).filter(
-                Q(title__icontains=d.get(2))) | Remains.objects.filter(article__contains=user_send_value_input)
-            if not remains.exists():  # если ничего не найдено из нескольких значений в инпуте
-                context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
-                           'e_art_title': 'Товар не найден', 'project': choice_project.values()}
-                return render(request, 'search.html', context=context)
-            else:
-                context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
-                           'project': choice_project.values()}
-                return render(request, 'search.html', context=context)
+
+        # else:  # Формируется 3 Q объекта. В импуте значения через пробел
+        #     projects_q = Q()  # Динамическое создание Q по выбранным проектам
+        #     for value in choice_project.values():
+        #         projects_q |= Q(**{'project': value})
+        #     values = str(user_send_value_input).split(' ')  # сбор значений с инпута
+        #     for i in enumerate(values):
+        #         d[i[0]] = i[1]
+        #     if not d.get(1):
+        #         d[1] = ''
+        #     if not d.get(2):
+        #         d[2] = ''
+        #     remains = Remains.objects.filter(projects_q).filter(Q(title__icontains=d[0])).filter(
+        #         Q(title__icontains=d.get(1))).filter(
+        #         Q(title__icontains=d.get(2))) | Remains.objects.filter(article__contains=user_send_value_input)
+        #     if not remains.exists():  # если ничего не найдено из нескольких значений в инпуте
+        #         context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
+        #                    'e_art_title': 'Товар не найден', 'project': choice_project.values(),  'file_name': file_name, 'username': request.user.username}
+        #         return render(request, 'search.html', context=context)
+        #     else:
+        #         context = {'title': 'Поиск', 'menu': menu, 'remains': remains, 'form': form,
+        #                    'project': choice_project.values(), 'file_name': file_name, 'username': request.user.username}
+        #         return render(request, 'search.html', context=context,)
 
     return render(request, 'search.html',
-                  {'title': 'Поиск', 'menu': menu, 'form': form, 'project': choice_project.values()})
+                  {'title': 'Поиск','form': form, 'project': choice_project.values(),'username': request.user.username})
 
 
 def get_details_product(request, id):
@@ -82,14 +79,13 @@ def get_details_product(request, id):
     for d in detail:
         article = d.article
         unit = d.base_unit
-        project = d.project
     det = Remains.objects.filter(article=article)
     sum_art = 0
     for d in det:
         sum_art += d.quantity
     sum_art = f'{sum_art}  {unit}'
 
-    return render(request, 'details.html', {'title': 'детали', 'det': det, 'sum': sum_art, 'art':article})
+    return render(request, 'details.html', {'title': 'детали', 'det': det, 'sum': sum_art, 'art': article})
 
 
 def choice_projects(request):

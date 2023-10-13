@@ -20,8 +20,6 @@ def get_doc_name():  # Функция для получения имени по�
         return doc[1]
     except IOError as e:
         print(f'ошибка в получении имени >>> {e}')
-
-
 # print(get_doc_name())
 
 

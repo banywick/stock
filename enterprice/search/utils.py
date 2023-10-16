@@ -6,8 +6,7 @@ from pathlib import Path
 db_path = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'db.sqlite3')
 media_path = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
 
-menu = [{'title': 'Главная', 'url_name': 'main'},
-        {'title': 'Обновить базу', 'url_name': 'update'}]
+
 
 
 def get_doc_name():  # Функция для получения имени последнего документа

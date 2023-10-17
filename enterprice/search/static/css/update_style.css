@@ -1,0 +1,40 @@
+
+.main_wrapper {
+    background-image: url("../img/2.jpg");
+    height: 93vh;
+
+}
+
+
+.header_logo img {
+    height: 140px;
+    width: 200px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+
+.load_file{
+    width: 500px;
+    height: 125px;
+    border: 3px solid black;
+    justify-content: center;
+    margin: 0 auto;
+    background: #ff6f32e6;
+    text-align: center;
+
+}
+
+.load_file form button{
+    width: 250px;
+    height: 30px;
+}
+
+.load_file form input[type='file']{
+    width: 300px;
+    height: 20px;
+}
+
+.load_file form button:hover{
+    border: 3px solid lightgreen;
+}

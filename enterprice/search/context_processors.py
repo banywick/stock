@@ -44,11 +44,20 @@ def get_context_input_filter_all(request):  # Поиск всему
     q_dict = {}
     form = InputValue(request.POST)
     if request.method == 'POST':
+
         if str(request.POST['input']).startswith('*'):  # поиск по арикулу
             remains = Remains.objects.filter(code__endswith=request.POST['input'][1:])
             if not remains.exists():  # если кверисет пустой, ничего не найдено
                 return {'form': form, 'e_code': 'Такой код не найден'}  # Контекст POST если значение  НЕ найдено
             return {'remains': remains, 'form': form}  # Контест POST если значение найдено
+
+        if str(request.POST['input']).startswith('-'):  # поиск по коментарию
+            remains = Remains.objects.filter(comment__icontains=request.POST['input'][1:])
+            if not remains.exists():  # если кверисет пустой, ничего не найдено
+                return {'form': form, 'e_code': 'Такой коментарий не найден'}  # Контекст POST если значение  НЕ найдено
+            return {'remains': remains, 'form': form}  # Контест POST если значение найдено
+
+
         user_send_value_input = request.POST['input']
         projects_filter_q = Q()  # Динамическое создание Q по выбранным проектам
         for value in choice_project.values():

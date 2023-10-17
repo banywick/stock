@@ -4,44 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title> Главная </title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
 </head>
 <body>
-<div class="wrapper">
-    <header>
-        <nav class="header_nav">
-            <div>
-                <img src="" alt="Картинка!!!">
-            </div>
-            {% for m in menu %}
-                <div><a href="{% url m.url_name %}">{{ m.title }}</a></div>
-            {% endfor %}
-        </nav>
-    </header>
 
-
+<header class="header">
+    <div class="header_logo">
+        <img src="{% static 'img/logo.jpg' %}" alt="">
+    </div>
+</header>
+<div class="main_wrapper">
+    19377
 </div>
-
-
-
-
-
-
-{% block choice %}
-{% endblock %}
-
-{% block detail %}
-{% endblock %}
-
-{% block update_page %}
-{% endblock %}
-
-
-
-{% block search %}
-
-{% endblock %}
-
-
 </body>
 </html>

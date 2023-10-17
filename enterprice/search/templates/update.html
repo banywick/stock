@@ -1,20 +1,32 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{% static 'css/update_style.css' %}">
     <meta charset="UTF-8">
     <meta name="viewport"
+
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> Обновить </title>
 </head>
 <body>
 
-<div style="background: bisque">
-    <form enctype="multipart/form-data" action="" method="POST">
-    {% csrf_token %}
-    {{ doc.as_p }}
-    <button>OK</button>
-    </form>
+<div class="main_wrapper">
+    <div class="header_logo">
+        <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+    </div>
+    <div class="load_file">
+        <form enctype="multipart/form-data" action="" method="POST">
+            {% csrf_token %}
+            {{ doc.as_p }}
+            <button>Отправить на обработку</button>
+        </form>
+    </div>
+
 </div>
+
 </body>
 </html>
+
+

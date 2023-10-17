@@ -1,3 +1,4 @@
+
 .header {
     background-image: url("../img/2.jpg");
     width: 100%;
@@ -146,6 +147,7 @@ table {
     border-spacing: 0;
     text-align: center;
     width: 100%;
+
 }
 
 
@@ -156,7 +158,6 @@ th {
 }
 
 th, td {
-
     border: 1px solid black;
 }
 

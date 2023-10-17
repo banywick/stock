@@ -67,8 +67,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'search.context_processors.get_all_context',
-                'search.context_processors.get_context_input_filter_code',
-                'search.context_processors.choice_project_dict'
+                'search.context_processors.choice_project_dict',
+                'search.context_processors.get_context_input_filter_all'
 
             ],
         },

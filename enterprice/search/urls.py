@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import get_access, update_load_document, search_engine, get_details_product, get_main_page, choice_projects
-from .context_processors import clear_sort
+from .utils.generate_context import clear_sort
 
 urlpatterns = [
     path('', get_access, name='login'),

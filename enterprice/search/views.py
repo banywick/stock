@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
-from .utils import save_data_db, delete_data_table
+from .utils_sql import save_data_db, delete_data_table
 from .models import Remains
-from .context_processors import choice_project_dict
+from .utils.generate_context import get_context_input_filter_all, choice_project_dict
 
 
 def get_access(request):
@@ -21,29 +21,13 @@ def update_load_document(request):
             doc.save()
             delete_data_table()
             save_data_db()
-            print('Данные загружены')
             return redirect('find')
     return render(request, 'update.html', {'doc': doc})
 
 
-def search_engine(request):  # Вьюшка под капотом с контекстым процессором.
-    if request.method == 'POST':
-        return render(request, 'search.html')
-    return render(request, 'search.html')
-
-
-        
-
-
-
-
-    #
-    #     if str(request.POST['input']).startswith('*'):
-    #         return render(request, 'search.html')
-    #     else:
-    #         return render(request, 'search.html')
-    # return render(request, 'search.html')
-
+def search_engine(request):
+    context = get_context_input_filter_all(request)
+    return render(request, 'search.html', context=context)
 
 
 def get_details_product(request, id):
@@ -61,7 +45,7 @@ def get_details_product(request, id):
 
 
 def choice_projects(request):
+    context = choice_project_dict(request)
     if request.method == 'POST':
-        choice_project_dict(request)
         return redirect('find')
-    return render(request, 'choice_project.html')
+    return render(request, 'choice_project.html', context=context)

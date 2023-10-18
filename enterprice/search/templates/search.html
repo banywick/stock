@@ -11,7 +11,7 @@
 
     <header class="header">
         <div class="header_logo">
-            <img src="{% static 'img/logo.jpg' %}" alt="">
+            <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
         <div class="header_find">
             <form class="form_input" method="POST">
@@ -37,14 +37,20 @@
                 Сотрировка по :
                 <hr>
                 {% for p in project %}
-                   <li>{{ p }}</li>
+                    <li>{{ p }}</li>
                 {% endfor %}
             </ul>
         </div>
         <div class="header_user_account">
-            <h3>Добро пожаловать!</h3>
-            <p>{{ username }}</p>
-            <a href="{% url 'login' %}">Войти</a>
+            {% if user.is_authenticated %}
+                <h2>Звравствуйте</h2>
+                <p>{{ user.username }}</p>
+                    {% else %}
+                <p>Привет, гость!</p>
+                {% endif %}
+
+
+            <a href="{% url 'login' %}">Выйти</a>
         </div>
     </header>
     <div class="container_left_center">
@@ -53,11 +59,9 @@
             <hr>
             {% for m in menu %}
                 <ul>
-                    <li> <a href="{% url m.url_name %}">{{ m.title }}</a></li>
+                    <li><a href="{% url m.url_name %}">{{ m.title }}</a></li>
                 </ul>
             {% endfor %}
-
-
 
 
         </div>
@@ -86,7 +90,7 @@
                             <td>{{ r.quantity }}</td>
                         </tr>
                     {% endfor %}
-                      {{ e_code }}
+                    {{ e_code }}
                     {{ e_art_title }}
                 </table>
             </div>

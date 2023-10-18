@@ -6,5 +6,5 @@ menu = [{'title': 'Главная', 'url_name': 'main'},
         ]
 
 
-def get_all_context(request):
-    return {'file_name': get_doc_name()[9:], 'menu': menu}
+# def get_all_context(request):
+#     return {'file_name': get_doc_name()[9:], 'menu': menu}

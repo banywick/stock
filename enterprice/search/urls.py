@@ -9,6 +9,7 @@ urlpatterns = [
     path('find/', search_engine, name='find'),
     path('details/<int:id>', get_details_product, name='details'),
     path('choice/', choice_projects, name='choice'),
-    path('clear/', clear_sort, name='clear')
+    path('clear/', clear_sort, name='clear'),
+
 
 ]

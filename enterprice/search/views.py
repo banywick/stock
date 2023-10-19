@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
-# from .utils_sql import save_data_db, delete_data_table
+from .utils_sql import save_data_db
 from .models import Remains
 from .utils.generate_context import get_context_input_filter_all, choice_project_dict
 
@@ -18,9 +18,8 @@ def update_load_document(request):
     if request.method == 'POST' and request.FILES:
         doc = DocumentForm(request.POST, request.FILES)
         if doc.is_valid():
-            # doc.save()
-            # delete_data_table()
-            # save_data_db()
+            doc.save()
+            save_data_db()
             return redirect('find')
     return render(request, 'update.html', {'doc': doc})
 
@@ -36,11 +35,10 @@ def get_details_product(request, id):
         article = d.article
         unit = d.base_unit
     det = Remains.objects.filter(article=article)
-    sum_art = 0
+    sum_art = []
     for d in det:
-        sum_art += d.quantity
-    sum_art = f'{sum_art}  {unit}'
-
+        sum_art.append(float(d.quantity))
+    sum_art = f'{sum(sum_art)}  {unit}'
     return render(request, 'details.html', {'title': 'детали', 'det': det, 'sum': sum_art, 'art': article})
 
 

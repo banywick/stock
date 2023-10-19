@@ -9,7 +9,7 @@ class Remains(models.Model):
     title = models.TextField(null=True)
     base_unit = models.CharField(max_length=10, null=True)
     project = models.CharField(max_length=30, null=True)
-    quantity = models.FloatField(blank=True, null=True)
+    quantity = models.DecimalField(blank=True, null=True,max_digits=4, decimal_places=2)
 
 
 class Document(models.Model):

@@ -34,7 +34,7 @@ def get_context_input_filter_all(request):  # Поиск всему
             error_message = 'Такой коментарий не найден'
         else:
             values = input_str.split(' ')  # сбор значений с инпута
-            values += [''] * (4 - len(values))  # Добавляем пустые строки, если введено менее трех слов
+            values += [''] * (4 - len(values))  # Добавляем пустые строки, если введено менее четырех слов
             query = Q(title__icontains=values[0]) & Q(title__icontains=values[1]) & Q(title__icontains=values[2]) & Q(
                 title__icontains=values[3])
             error_message = 'Товар не найден'
@@ -47,5 +47,5 @@ def get_context_input_filter_all(request):  # Поиск всему
             article__contains=input_str)
         if not remains.exists():  # если ничего не найдено из нескольких значений в инпуте
             return {'form': form, 'e_art_title': error_message}
-        return {'remains': remains, 'form': form}
+        return {'remains': remains, 'form': form, 'project': choice_project.values()}
     return {'form': form, 'project': choice_project.values()}  # Возврат контест GET

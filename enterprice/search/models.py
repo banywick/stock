@@ -6,9 +6,9 @@ class Remains(models.Model):
     code = models.CharField(max_length=50, null=True)
     article = models.CharField(max_length=50, null=True)
     party = models.CharField(max_length=9, null=True)
-    title = models.CharField(max_length=100, null=True)
+    title = models.TextField(null=True)
     base_unit = models.CharField(max_length=10, null=True)
-    project = models.CharField(max_length=20, null=True)
+    project = models.CharField(max_length=30, null=True)
     quantity = models.FloatField(blank=True, null=True)
 
 

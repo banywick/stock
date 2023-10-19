@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
-from .utils_sql import save_data_db, delete_data_table
+# from .utils_sql import save_data_db, delete_data_table
 from .models import Remains
 from .utils.generate_context import get_context_input_filter_all, choice_project_dict
 
@@ -18,9 +18,9 @@ def update_load_document(request):
     if request.method == 'POST' and request.FILES:
         doc = DocumentForm(request.POST, request.FILES)
         if doc.is_valid():
-            doc.save()
-            delete_data_table()
-            save_data_db()
+            # doc.save()
+            # delete_data_table()
+            # save_data_db()
             return redirect('find')
     return render(request, 'update.html', {'doc': doc})
 

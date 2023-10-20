@@ -23,6 +23,7 @@
     background: #ff6f32e6;
     text-align: center;
 
+
 }
 
 .load_file form button {
@@ -46,4 +47,30 @@
     font-size: 20px;
 }
 
+.error_massage {
+    height: 100px;
+    width: 500px;
+    background: #6a43ff;
+    text-align: center;
+    border: #0e0e0e solid 3px;
+    color: #ffffff;
+    margin: 0 auto;
 
+
+}
+
+#alertBox {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+#alertBox h2 {
+    background-color: #fff;
+    border: 2px solid #000;
+    padding: 15px;
+
+}

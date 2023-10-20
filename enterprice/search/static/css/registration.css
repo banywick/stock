@@ -2,6 +2,8 @@
     padding-top: 90px;
     padding-left: 10px;
     padding-right: 10px;
+    background-image: url("../img/2.jpg");
+    height: 89vh;
 }
 
 .main__form {
@@ -23,12 +25,12 @@
 }
 
 .main__form-title {
-    color: #000;
+    color: #0e0e0e;
     text-align: center;
-    font-family: Montserrat;
+   font-family:"Times New Roman";
     font-size: 30px;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 600;
     line-height: normal;
     margin-bottom: 30px;
 
@@ -42,6 +44,7 @@
     max-width: 312px;
     margin-bottom: 35px;
 
+
 }
 
 .main__form-input-wrapper input {
@@ -49,86 +52,41 @@
     border-radius: 3px;
     background: #2F5A53;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    color: white;
+
 }
 
 .main__form-input-wrapper input::placeholder {
     color: rgba(255, 255, 255, 0.5);
-    font-family: Montserrat;
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
-.main_form_remembering_entrance {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    max-width: 312px;
-    width: 100%;
-    justify-content: space-between;
-
+.alert-danger p{
+    color: #e22b2b;
+    font-size: 20px;
 }
 
-.main_form_checkbox_label {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-}
-
-.main_form_checkbox_label input {
-    display: none;
-}
-
-.main_form_checkbox_label p {
-    color: #000;
-    font-family: Montserrat;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-
-}
-
-.main_form_checkbox {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    background: #2F5A53;
-    box-shadow: 0px 1px 3px 0px rgba(40, 12, 68, 0.30) inset;
-}
 
 .main_form_entrance {
     color: #FFF;
     text-align: center;
-    font-family: Montserrat;
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     max-width: 100%;
     background: #2F5A53;
-    border-radius: 5px;
+    border-radius: 14px;
     padding: 10px;
+    height: 50px;
 }
 
-.main_form_registration_recovery {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    margin-top: 20px;
-
+.main_form_entrance:hover{
+    border: #71ff8d solid 2px;
 }
 
-.main_form_registration_recovery button {
-    color: #FFF;
-    text-align: center;
-    font-family: Montserrat;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    border-radius: 5px;
-    background: #2F5A53;
-    padding: 10px;
-}
+
+

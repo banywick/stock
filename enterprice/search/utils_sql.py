@@ -20,5 +20,9 @@ def save_data_db():  # Чтение данных из Excel
     df = df.where(pd.notnull(df), None)  # Замена NULL значений на None
     engine = create_engine('postgresql://postgres:19377@127.0.0.1:5432/postgres')  # Создание подключения к базе данных
     df.columns = ['comment', 'code', 'article', 'party', 'title', 'base_unit', 'project', 'quantity']  # Замена  на желаемые названия столбцов
-    # dtype = {'quantity': 'DECIMAL(10,2)'}
+    df['quantity'] = df['quantity'].astype(float).round(2)
     df.to_sql('search_remains', engine, if_exists='replace',  index_label='id')  # Запись данных в базу данных
+
+
+
+

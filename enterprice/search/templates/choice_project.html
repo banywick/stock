@@ -21,9 +21,14 @@
           </button>
 
         <div class="header_user_account">
-            <h3>Добро пожаловать!</h3>
-            <p>User</p>
-        </div>
+            {% if user.is_authenticated %}
+                <h2>Звравствуйте</h2>
+                <p>{{ user.username }}</p>
+                    {% else %}
+                <p>Привет, гость!</p>
+                {% endif %}
+          <a href="{% url 'login' %}">Войти</a>
+         </div>
     </header>
     <div class="container_left_center">
         <div class="left_colum">

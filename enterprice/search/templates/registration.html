@@ -1,49 +1,41 @@
 <!doctype html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../static/css/null_for_templates.css">
-    <link rel="stylesheet" href="../static/css/registration.css">
+
+    <link rel="stylesheet" href="{% static 'css/registration.css' %}">
     <title>Form</title>
 </head>
 <body>
 <div class="wrapper">
     <form method="POST" class="main__form">
+        {% csrf_token %}
         <div class="main__form-image">
             <img src="../static/img/mainImage.svg" alt="../static/img/mainImage.svg">
         </div>
         <h1 class="main__form-title">
-            Войти в личный кабинет
+            Поисковик <br> ОКБ ТСП
         </h1>
+
         <div class="main__form-input-wrapper">
-            <input type="text" name="login" placeholder="Логин">
+
+             {% if error %}
+        <div class="alert-danger">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
+            <input type="text" name="username" placeholder="Логин">
             <input type="password" name="password" placeholder="Пароль">
         </div>
-        <div class="main_form_remembering_entrance">
-            <label class="main_form_checkbox_label" for="remember_me">
-                <div class="main_form_checkbox">
-
-                </div>
-                <p>
-                    Запомнить меня
-                </p>
-                <input type="checkbox" name="checkbox" id="remember_me">
-            </label>
-            <button class="main_form_entrance">
+            <button class="main_form_entrance" type="submit">
                 Войти
             </button>
-        </div>
-        <div class="main_form_registration_recovery">
-            <button>
-                Регистрация
-            </button>
-            <button>
-                Восстановить пароль
-            </button>
-        </div>
+
     </form>
 </div>
 </body>

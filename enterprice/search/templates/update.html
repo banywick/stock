@@ -11,25 +11,30 @@
     <title> Обновить </title>
 </head>
 <body>
-
 <div class="main_wrapper">
-    <div class="header_logo">
-        <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
-    </div>
-    <div class="load_file">
-        <form enctype="multipart/form-data" action="" method="POST">
+        <div class="header_logo">
+            <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+        </div>
+        <div class="load_file">
+        <form enctype="multipart/form-data" action="" method="POST" id="myForm">
             {% csrf_token %}
             {{ doc.as_p }}
             <button>Отправить на обработку</button>
         </form>
     </div>
-    <p class="alert">
-        Внимание!<br>
-        После отправки дождитесь  окончания загрузки!
-    </p>
-
+    <div id="alertBox">
+        <h2>
+            Пожалуйста, будьте терпеливы, загрузка файла может занять некоторое время <br>
+            После нажатия на "Отправить на обработку" дождитесь окончания загрузки.
+        </h2>
+    </div>
+        {% for message in messages %}
+            <div class="error_massage">
+                <h2>{{ message }}</h2>
+            </div>
+        {% endfor %}
 </div>
-
+<script src="../static/js/script.js"></script>
 </body>
 </html>
 

@@ -1,12 +1,25 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
 from .utils_sql import save_data_db
 from .models import Remains
 from .utils.generate_context import get_context_input_filter_all, choice_project_dict
+from .utils.validators import validate_name_load_doc
 
 
 def get_access(request):
-    return render(request, 'registration.html')
+    context = {}
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('find')
+        else:
+            context['error'] = 'Неверное имя пользователя или пароль'
+    return render(request, 'registration.html', context)
 
 
 def get_main_page(request):
@@ -14,14 +27,23 @@ def get_main_page(request):
 
 
 def update_load_document(request):
-    doc = DocumentForm()
+    doc = None
+    error_massage = ''
     if request.method == 'POST' and request.FILES:
         doc = DocumentForm(request.POST, request.FILES)
-        if doc.is_valid():
-            doc.save()
-            save_data_db()
-            return redirect('find')
-    return render(request, 'update.html', {'doc': doc})
+        error_massage = validate_name_load_doc(request)
+        if not error_massage:
+            try:
+                doc.save()
+                save_data_db()
+                return redirect('find')
+            except:
+                messages.error(request, 'Произошла ошибка! Проверьте пожалуйта файл который вы загружаете.')
+                return render(request, 'update.html', {'doc': doc})
+    else:
+        doc = DocumentForm()
+    messages.error(request, error_massage)
+    return render(request, 'update.html', {'doc': doc, 'error_massage': error_massage})
 
 
 def search_engine(request):

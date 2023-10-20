@@ -42,15 +42,15 @@
             </ul>
         </div>
         <div class="header_user_account">
-            {% if user.is_authenticated %}
-                <h2>Звравствуйте</h2>
-                <p>{{ user.username }}</p>
-                    {% else %}
-                <p>Привет, гость!</p>
-                {% endif %}
 
 
-            <a href="{% url 'login' %}">Войти</a>
+            {% if request.user.is_authenticated %}
+                <h2>Здравствуйте</h2>
+                <h3> {{ user.username }}</h3>
+                <a href="{% url 'logout' %}">Выход</a>
+            {% endif %}
+
+
         </div>
     </header>
     <div class="container_left_center">

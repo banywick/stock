@@ -1,11 +1,17 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
 from .utils_sql import save_data_db
 from .models import Remains
 from .utils.generate_context import get_context_input_filter_all, choice_project_dict
 from .utils.validators import validate_name_load_doc
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
 
 
 def get_access(request):
@@ -25,7 +31,7 @@ def get_access(request):
 def get_main_page(request):
     return render(request, 'main.html')
 
-
+@login_required
 def update_load_document(request):
     doc = None
     error_massage = ''
@@ -45,7 +51,7 @@ def update_load_document(request):
     messages.error(request, error_massage)
     return render(request, 'update.html', {'doc': doc, 'error_massage': error_massage})
 
-
+@login_required
 def search_engine(request):
     context = get_context_input_filter_all(request)
     return render(request, 'search.html', context=context)

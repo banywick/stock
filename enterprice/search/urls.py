@@ -1,5 +1,7 @@
+from django.contrib.auth import logout
 from django.urls import path
-from .views import get_access, update_load_document, search_engine, get_details_product, get_main_page, choice_projects
+from .views import get_access, update_load_document, search_engine, get_details_product, get_main_page, choice_projects, \
+    user_logout
 from .utils.generate_context import clear_sort
 
 urlpatterns = [
@@ -10,6 +12,7 @@ urlpatterns = [
     path('details/<int:id>', get_details_product, name='details'),
     path('choice/', choice_projects, name='choice'),
     path('clear/', clear_sort, name='clear'),
+    path('logout/', user_logout, name='logout')
 
 
 ]

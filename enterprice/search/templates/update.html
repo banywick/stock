@@ -13,7 +13,7 @@
 <body>
 <div class="main_wrapper">
         <div class="header_logo">
-            <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+            <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
         <div class="load_file">
         <form enctype="multipart/form-data" action="" method="POST" id="myForm">
@@ -34,7 +34,7 @@
             </div>
         {% endfor %}
 </div>
-<script src="../static/js/script.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
 

@@ -57,12 +57,17 @@
         <div class="left_colum">
             <h2>Меню</h2>
             <hr>
-            {% for m in menu %}
-                <ul>
-                    <li><a href="{% url m.url_name %}">{{ m.title }}</a></li>
-                </ul>
-            {% endfor %}
+            <ul>
+                <li><a href="{% url 'main' %}">Инструкция</a></li>
+                {% if user_is_in_group %}
+                    <li><a href="{% url 'update' %}">Обновить базу</a></li>
+                    <li><a href="">Инвентаризация</a></li>
+                    <li><a href="">Адресное хранение</a></li>
+                {% endif %}
+                <li><a href="">Калькулятор метизов</a></li>
+                <li><a href="">Рассчет ПВХ, ПМЛ</a></li>
 
+            </ul>
 
         </div>
         <div class="center_colum">

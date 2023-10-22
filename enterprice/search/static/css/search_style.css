@@ -112,10 +112,21 @@
 
 .left_colum ul li a {
     text-decoration: none;
+    color: black;
 }
 
+.left_colum ul li {
+    margin-bottom: 15px;
+    font-size: 20px;
+    list-style: none;
+    text-align:left;
+}
 
-
+.left_colum ul a:hover {
+    color: #e22b2b;
+    transition: color 0.5s ease;
+    text-decoration: underline
+}
 
 * {
     box-sizing: border-box;

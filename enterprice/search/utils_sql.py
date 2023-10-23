@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine
-import numpy as np
+# import numpy as np
 
 
 BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

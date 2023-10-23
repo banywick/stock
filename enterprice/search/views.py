@@ -25,6 +25,8 @@ def get_access(request):
             return redirect('find')
         else:
             context['error'] = 'Неверное имя пользователя или пароль'
+    if request.user.is_authenticated:
+        return redirect('find')
     return render(request, 'registration.html', context)
 
 
@@ -56,7 +58,7 @@ def search_engine(request):
     context = get_context_input_filter_all(request)
     return render(request, 'search.html', context=context)
 
-
+@login_required
 def get_details_product(request, id):
     detail = Remains.objects.filter(id=id)
     for d in detail:
@@ -69,7 +71,7 @@ def get_details_product(request, id):
     sum_art = f'{sum(sum_art)}  {unit}'
     return render(request, 'details.html', {'title': 'детали', 'det': det, 'sum': sum_art, 'art': article})
 
-
+@login_required
 def choice_projects(request):
     context = choice_project_dict(request)
     if request.method == 'POST':

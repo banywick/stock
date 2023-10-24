@@ -11,20 +11,22 @@
 </head>
 <header class="header">
     <div class="header_logo">
-         <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+        <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
     </div>
 </header>
 <body>
 <div class="main_wrapper">
     <div class="details_cart">
         <h3>Артикул</h3>
-         <h2> {{ art }}</h2>
+        <h2> {{ art }}</h2>
+        <hr>
+        <p>{{ title }}</p>
         <hr>
         <h4>Проекты</h4>
         {% for d in det %}
             <ul>
                 <li> {{ d.project }}</li>
-                <li> {{ d.quantity }}  {{ d.base_unit }}</li>
+                <li> {{ d.quantity }} {{ d.base_unit }}</li>
             </ul>
         {% endfor %}
         <h3>Общая сумма : {{ sum }}</h3>

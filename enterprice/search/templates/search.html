@@ -61,7 +61,7 @@
                 <li><a href="{% url 'main' %}">Инструкция</a></li>
                 {% if user_is_in_group %}
                     <li><a href="{% url 'update' %}">Обновить базу</a></li>
-                    <li><a href="">Инвентаризация</a></li>
+                    <li><a href="{% url 'inventory:inventory' %}">Инвентаризация</a></li>
                     <li><a href="">Адресное хранение</a></li>
                 {% endif %}
                 <li><a href="">Калькулятор метизов</a></li>

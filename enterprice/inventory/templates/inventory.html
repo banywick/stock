@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/inventory_style.css' %}">
+    <title>Title</title>
+</head>
+<body>
+<div class="main_wrapper">
+    <header>
+        <div class="header_find">
+            <form class="form_input" method="POST" id="find_form">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </form>
+        </div>
+        <div class="find_button">
+            <button type="submit" form="find_form">
+               🔎
+            </button>
+        </div>
+        <div class="header_user_account">
+            {% if request.user.is_authenticated %}
+                <h2>Здравствуйте</h2>
+                <h3> {{ user.username }}</h3>
+                <a href="{% url 'logout' %}">Выход</a>
+            {% endif %}
+         </div>
+    </header>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

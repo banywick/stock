@@ -33,6 +33,7 @@ def get_access(request):
 def get_main_page(request):
     return render(request, 'main.html')
 
+
 @login_required
 def update_load_document(request):
     doc = None
@@ -45,18 +46,20 @@ def update_load_document(request):
                 doc.save()
                 save_data_db()
                 return redirect('find')
-            except:
-                messages.error(request, 'Произошла ошибка! Проверьте пожалуйта файл который вы загружаете.')
+            except IOError:
+                messages.error(request, 'Произошла ошибка! Проверьте пожалуйта файл который вы загружаете. Ошибка')
                 return render(request, 'update.html', {'doc': doc})
     else:
         doc = DocumentForm()
     messages.error(request, error_massage)
     return render(request, 'update.html', {'doc': doc, 'error_massage': error_massage})
 
+
 @login_required
 def search_engine(request):
     context = get_context_input_filter_all(request)
     return render(request, 'search.html', context=context)
+
 
 @login_required
 def get_details_product(request, id):
@@ -64,12 +67,15 @@ def get_details_product(request, id):
     for d in detail:
         article = d.article
         unit = d.base_unit
+        title = d.title
     det = Remains.objects.filter(article=article)
     sum_art = []
     for d in det:
         sum_art.append(float(d.quantity))
     sum_art = f'{sum(sum_art)}  {unit}'
-    return render(request, 'details.html', {'title': 'детали', 'det': det, 'sum': sum_art, 'art': article})
+    return render(request, 'details.html',
+                  {'title': 'детали', 'det': det, 'sum': sum_art, 'art': article, 'title': title})
+
 
 @login_required
 def choice_projects(request):

@@ -2,7 +2,9 @@ from ..utils_sql import get_doc_name
 
 
 def get_all_context(request):
+
     return {'file_name': get_doc_name()[9:]}
+print(get_all_context(['file_name']))
 
 
 def user_permission_is_in_group(request):

@@ -17,7 +17,7 @@
         </div>
         <div class="find_button">
             <button type="submit" form="find_form">
-               🔎
+                🔎
             </button>
         </div>
         <div class="header_user_account">
@@ -26,18 +26,33 @@
                 <h3> {{ user.username }}</h3>
                 <a href="{% url 'logout' %}">Выход</a>
             {% endif %}
-         </div>
+        </div>
     </header>
+    <div class="table">
+        <h1>Таблица товаров</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Артикул</th>
+                <th>Наименование</th>
+                <th>Базовая единица</th>
+                <th>Количество</th>
+                <th>Статус</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in inventory %}
+                <tr>
+                    <td>{{ i.article }}</td>
+                    <td>{{ i.title }}</td>
+                    <td>{{ i.base_unit }}</td>
+                    <td>{{ i.total_quantity }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 
 </body>

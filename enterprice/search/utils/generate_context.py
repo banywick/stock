@@ -1,9 +1,13 @@
 from django.shortcuts import redirect
-from ..models import Remains
+from ..models import Remains, RemainsInventory
 from ..forms import InputValue
-from django.db.models import Q
+from django.db.models import Q, Sum
+
+from ..utils_sql import get_doc_name
 
 choice_project = dict()  # Хранилище выбранных проектов
+
+
 
 
 def clear_sort(request):
@@ -49,3 +53,8 @@ def get_context_input_filter_all(request):  # Поиск всему
             return {'form': form, 'e_art_title': error_message}
         return {'remains': remains, 'form': form, 'project': choice_project.values()}
     return {'form': form, 'project': choice_project.values()}  # Возврат контест GET
+
+
+def get_inventory(request):
+    inventory = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(total_quantity=Sum('quantity'))
+    return {'inventory': inventory}

@@ -1,40 +1,52 @@
 header {
     background-image: url("../img/heder_back.jpg");
-    background-size:auto;
     width: 100%;
     height: 150px;
     display: flex;
     align-items: center;
     padding-left: 5px;
     padding-top: 5px;
+    justify-content: space-between;
+
+}
+
+
+.header_logo img {
+    height: 140px;
+    width: 200px;
+    border-radius: 20px;
+    margin-right: 25px;
+}
+
+.header_find_container {
+    display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100%;
 
 }
 
-.form_input {
-    position: relative;
-    width: 400px;
-    margin: 0 auto;
-
-}
-
-input {
-    width: 100%;
+.form_input input {
     height: 42px;
     padding-left: 10px;
-    border: 3px solid #0e0e0e;
-    border-radius: 5px;
-    outline: none;
-    background: #fcfcfc;
+    border: 2px solid #0e0e0e;
+    width: 400px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow:10px 10px 10px 2px rgba(34, 60, 80, 0.2);
+
+
 }
 
-.find_button{
-    width: 90px;
+.find_button {
     height: 44px;
-     border: 3px solid #0e0e0e;
-    border-radius: 10px;
+    border: 3px solid #0e0e0e;
+    /*border-radius: 10px;*/
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     text-align: center;
-    margin-right: 100px;
+    box-shadow:10px 10px 10px 2px rgba(34, 60, 80, 0.2);
+
 
 }
 
@@ -46,15 +58,79 @@ input {
     border: none;
 }
 
-.find_button button:hover{
+.find_button button:hover {
     background-color: #81f178;
-     box-shadow: 0 0 10px #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
 
 }
 
-body{
-    background: #e22b2b;
+.header_user_account img{
+    height: 70px;
+    width: 70px;
+    border-radius: 100%;
+    margin-bottom: -20px;
+    margin-top: 10px;
+}
+
+.header_user_account a{
+    text-decoration: none;
+
+}
+.header_user_account p{
+
+    font-size: 20px;
 }
 
 
+.table {
+    overflow: auto;
+    max-height: 83vh;
+}
 
+.table th {
+    position: sticky;
+    top: 0;
+
+}
+
+.table_inv {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #b07f7f;
+}
+
+.table_inv th {
+
+    font-weight: bold;
+    padding: 5px;
+    background: #6287a1;
+    border: 1px solid #dddddd;
+}
+
+.table_inv td {
+    border: 1px solid #dddddd;
+    padding: 5px;
+    text-align: center;
+}
+
+.table_div tbody td:hover {
+    background-color: #e22b2b;
+}
+
+.article_table {
+    width: 300px;
+}
+
+.article_table a {
+    text-decoration: none;
+    color: black;
+}
+
+.article_table a:hover {
+    background-color: rgba(83, 243, 62, 0.68);
+    text-decoration: underline
+}
+
+.title_table{
+    width: 50%;
+}

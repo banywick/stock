@@ -3,9 +3,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
-from .utils_sql import load_inventory_doc
+from .utils_sql import save_data_db
 from .models import Remains
-from .utils.generate_context import get_context_input_filter_all, choice_project_dict, get_inventory, get_doc_name
+from .utils.generate_context import get_context_input_filter_all, choice_project_dict, get_inventory
 from .utils.validators import validate_name_load_doc
 
 
@@ -44,7 +44,7 @@ def update_load_document(request):
         if not error_massage:
             try:
                 doc.save()
-                get_doc_name()
+                save_data_db()
                 return redirect('find')
             except IOError:
                 messages.error(request, 'Произошла ошибка! Проверьте пожалуйта файл который вы загружаете. Ошибка')
@@ -85,8 +85,10 @@ def choice_projects(request):
     return render(request, 'choice_project.html', context=context)
 
 
-
-
 def get_main_inventory(request):
     context = get_inventory(request)
     return render(request, 'inventory.html', context=context)
+
+
+def inventory_detail(request):
+    return render(request, 'inventory_detail.html')

@@ -8,8 +8,6 @@ from ..utils_sql import get_doc_name
 choice_project = dict()  # Хранилище выбранных проектов
 
 
-
-
 def clear_sort(request):
     if request.method == 'POST':
         choice_project.clear()
@@ -56,5 +54,18 @@ def get_context_input_filter_all(request):  # Поиск всему
 
 
 def get_inventory(request):
-    inventory = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(total_quantity=Sum('quantity'))
-    return {'inventory': inventory}
+    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(
+        total_quantity=Sum('quantity'))
+    form = InputValue(request.POST)
+    if request.method == 'POST':
+        values = request.POST['input'].split(' ')  # сбор значений с инпута
+        values += [''] * (4 - len(values))  # Добавляем пустые строки, если введено менее четырех слов
+        query = Q(title__icontains=values[0]) & Q(title__icontains=values[1]) & Q(title__icontains=values[2]) & Q(
+            title__icontains=values[3])
+        error_message = 'Товар не найден'
+        inventory = unic_sum_posit.filter(query) | unic_sum_posit.filter(
+            article__contains=request.POST['input'])
+        if not inventory.exists():  # если ничего не найдено из нескольких значений в инпуте
+            return {'form': form, 'e_art_title': error_message}
+        return {'form': form, 'inventory': inventory}
+    return {'form': form}

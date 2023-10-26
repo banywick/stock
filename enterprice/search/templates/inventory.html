@@ -4,34 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/inventory_style.css' %}">
-    <title>Title</title>
+    <title>Инвентаризация</title>
 </head>
 <body>
 <div class="main_wrapper">
     <header>
-        <div class="header_find">
-            <form class="form_input" method="POST" id="find_form">
-                {% csrf_token %}
-                {{ form.as_p }}
-            </form>
+
+        <div class="header_logo">
+            <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
-        <div class="find_button">
-            <button type="submit" form="find_form">
-                🔎
-            </button>
+
+        <div class="header_find_container">
+            <div class="form_input">
+                <form method="POST" id="find_form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </form>
+            </div>
+            <div class="find_button">
+                <button type="submit" form="find_form">
+                    Найти 🔎
+                </button>
+            </div>
         </div>
+        <div class="info">
+        <ul>
+            <li>Выполнеено - 26%</li>
+            <li>Поститанно  2487 позиций</li>
+            <li>Общее количество позиций - 65841</li>
+            <li>Осталось - 32547 </li>
+        </ul>
+        </div>
+
+
         <div class="header_user_account">
             {% if request.user.is_authenticated %}
-                <h2>Здравствуйте</h2>
+                <img src="{% static 'img/user_icon.png' %}" alt="">
                 <h3> {{ user.username }}</h3>
-                <a href="{% url 'logout' %}">Выход</a>
+                <p><a href="{% url 'logout' %}">Выход</a></p>
             {% endif %}
         </div>
+
     </header>
     <div class="table">
-        <h1>Таблица товаров</h1>
-        <table>
-            <thead>
+        <table class="table_inv">
             <tr>
                 <th>Артикул</th>
                 <th>Наименование</th>
@@ -39,17 +55,15 @@
                 <th>Количество</th>
                 <th>Статус</th>
             </tr>
-            </thead>
-            <tbody>
             {% for i in inventory %}
                 <tr>
-                    <td>{{ i.article }}</td>
-                    <td>{{ i.title }}</td>
+                    <td class="article_table"><a href="{% url 'inventory_detail' %}">{{ i.article }}</a></td>
+                    <td class="title_table">{{ i.title }}</td>
                     <td>{{ i.base_unit }}</td>
                     <td>{{ i.total_quantity }}</td>
+                    <td></td>
                 </tr>
             {% endfor %}
-            </tbody>
         </table>
     </div>
 </div>

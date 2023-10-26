@@ -84,6 +84,7 @@
                         <th>Количество</th>
                     </tr>
                     {% for r in remains %}
+                        <tbody>
                         <tr>
                             <td>{{ r.comment }}</td>
                             <td>{{ r.code }}</td>
@@ -94,6 +95,7 @@
                             <td>{{ r.project }}</td>
                             <td>{{ r.quantity }}</td>
                         </tr>
+                        </tbody>
                     {% endfor %}
                     {{ e_code }}
                     {{ e_art_title }}

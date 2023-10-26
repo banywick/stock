@@ -5,6 +5,35 @@
     <title>Детализация</title>
 </head>
 <body>
-логика!!!
+
+<h2><a href="{% url 'inventory' %}">НАЗАД</a></h2>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="text" placeholder="количество найдено" name="quantity_set">
+    <button>отправить</button>
+</form>
+<table class="table_inv">
+    <tr>
+        <th>Пользователь</th>
+        <th>Артикул</th>
+        <th>Наименование</th>
+        <th>Единица</th>
+        <th>Колчество ИНВ</th>
+        <th>Найдено</th>
+        <th>Дата время</th>
+    </tr>
+    {% for d in inventory %}
+        <tr>
+            <td>{{ d.user }}</td>
+            <td>{{ d.product.article }}</td>
+            <td>{{ d.product.title }}</td>
+            <td>{{ d.product.base_unit }}</td>
+            <td>{{ d.product.quantity }}</td>
+            <td>{{ d.quantity_ord }}</td>
+            <td>{{ d.created_at }}</td>
+        </tr>
+    {% endfor %}
+</table>
 </body>
 </html>

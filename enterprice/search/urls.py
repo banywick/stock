@@ -14,7 +14,7 @@ urlpatterns = [
     path('clear/', clear_sort, name='clear'),
     path('logout/', user_logout, name='logout'),
     path('inventory/', get_main_inventory, name='inventory'),
-    path('detail-product/', inventory_detail, name='inventory_detail')
+    path('detail-product/<str:article>', inventory_detail, name='inventory_detail')
 
 
 

@@ -21,8 +21,7 @@ class RemainsInventory(models.Model):
     article = models.CharField(max_length=70, null=True)
     title = models.TextField(null=True)
     base_unit = models.CharField(max_length=10, null=True)
-    quantity = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
-
+    quantity = models.DecimalField(blank=True, null=True, max_digits=15, decimal_places=2)
 
 
 class OrderInventory(models.Model):

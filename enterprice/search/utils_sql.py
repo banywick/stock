@@ -39,7 +39,6 @@ def save_data_db():  # Чтение данных из Excel
     engine = create_engine('postgresql://postgres:19377@127.0.0.1:5432/postgres')  # Создание подключения к базе данных
     df.columns = ['comment', 'code', 'article', 'party', 'title', 'base_unit', 'project',
                   'quantity']  # Замена  на желаемые названия столбцов
-    # df['quantity'] = np.where(df['quantity'] % 1 == 0, df['column_name'].astype(int), round(df['column_name'], 2))
     df['quantity'] = df['quantity'].astype(float).round(2)
     df.to_sql('search_remains', engine, if_exists='replace', index_label='id')  # Запись данных в базу данных
 
@@ -48,15 +47,16 @@ def save_data_db():  # Чтение данных из Excel
 
 
 def load_inventory_doc():
-    df = pd.read_excel(r'G:\Адресное хранение склад\Свалка\тест\03.10.23.xlsx', usecols=[13, 15, 16, 18])
+    df = pd.read_excel(f'{media_path}/{get_doc_name()}', usecols=[13, 15, 16, 18])
     df = df.iloc[10:]  # Начинаем с 10 строки
     df = df.where(pd.notnull(df), None)  # Замена NULL значений на None
     engine = create_engine('postgresql://postgres:19377@127.0.0.1:5432/postgres')  # Создание подключения к базе данных
-    df.columns = ['article', 'title', 'base_unit', 'quantity']  # Замена  на желаемые названия столбцов
-    df['quantity'] = df['quantity'].astype(float).round(2)
     with engine.connect() as con:
         con.execute(text("DELETE from search_remainsinventory"))  # отчищаем паблицу перед APPEND
         con.commit()
+    df.columns = ['article', 'title', 'base_unit', 'quantity']  # Замена  на желаемые названия столбцов
+    # df['quantity'] = df['quantity'].astype(float).round(2)
     df.to_sql('search_remainsinventory', engine, if_exists='append', index_label='id')  # Запись данных в базу данных
+
 
 # load_inventory_doc()

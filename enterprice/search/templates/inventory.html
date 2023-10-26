@@ -11,7 +11,7 @@
     <header>
 
         <div class="header_logo">
-            <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+            <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
 
         <div class="header_find_container">
@@ -28,12 +28,12 @@
             </div>
         </div>
         <div class="info">
-        <ul>
-            <li>Выполнеено - 26%</li>
-            <li>Поститанно  2487 позиций</li>
-            <li>Общее количество позиций - 65841</li>
-            <li>Осталось - 32547 </li>
-        </ul>
+            <ul>
+                <li>Выполнеено - 26%</li>
+                <li>Поститанно 2487 позиций</li>
+                <li>Общее количество позиций - 65841</li>
+                <li>Осталось - 32547</li>
+            </ul>
         </div>
 
 
@@ -46,6 +46,9 @@
         </div>
 
     </header>
+
+
+
     <div class="table">
         <table class="table_inv">
             <tr>
@@ -57,7 +60,7 @@
             </tr>
             {% for i in inventory %}
                 <tr>
-                    <td class="article_table"><a href="{% url 'inventory_detail' %}">{{ i.article }}</a></td>
+                    <td class="article_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.article }}</a></td>
                     <td class="title_table">{{ i.title }}</td>
                     <td>{{ i.base_unit }}</td>
                     <td>{{ i.total_quantity }}</td>

@@ -39,7 +39,7 @@
 
         <div class="header_user_account">
             {% if request.user.is_authenticated %}
-                <img src="{% static 'img/user_icon.png' %}" alt="">
+                <a href="{% url 'user_detail' %}"> <img src="{% static 'img/user_icon.png' %}" alt=""></a>
                 <h3> {{ user.username }}</h3>
                 <p><a href="{% url 'logout' %}">Выход</a></p>
             {% endif %}

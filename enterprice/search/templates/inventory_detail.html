@@ -1,39 +1,67 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/inventory_detail_style.css' %}">
     <title>Детализация</title>
 </head>
 <body>
 
-<h2><a href="{% url 'inventory' %}">НАЗАД</a></h2>
+<div class="main_wrapper">
+    <header>
+        <div class="header_logo">
+            <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+        </div>
+        <div class="header_position_description">
+            <ul>
+                <li> Артикул {{ product.article }}</li>
+                <li>Остаток {{ product.quantity }} {{ product.base_unit }}</li>
+                <li>Посчитанная сумма ?</li>
+                <li>Осталось найти ?</li>
+            </ul>
+        </div>
 
-<form action="" method="POST">
-    {% csrf_token %}
-    <input type="text" placeholder="количество найдено" name="quantity_set">
-    <button>отправить</button>
-</form>
-<table class="table_inv">
-    <tr>
-        <th>Пользователь</th>
-        <th>Артикул</th>
-        <th>Наименование</th>
-        <th>Единица</th>
-        <th>Колчество ИНВ</th>
-        <th>Найдено</th>
-        <th>Дата время</th>
-    </tr>
-    {% for d in inventory %}
-        <tr>
-            <td>{{ d.user }}</td>
-            <td>{{ d.product.article }}</td>
-            <td>{{ d.product.title }}</td>
-            <td>{{ d.product.base_unit }}</td>
-            <td>{{ d.product.quantity }}</td>
-            <td>{{ d.quantity_ord }}</td>
-            <td>{{ d.created_at }}</td>
-        </tr>
-    {% endfor %}
-</table>
+         <div class="form_set_quantity">
+             <lable>Введите подсчитанное количество.</lable>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="количество найдено" name="quantity_set">
+                <button class="find_button">отправить</button>
+            </form>
+        </div>
+        <a href="{% url 'inventory' %}"><h2> Продолжить поиск ➡️</h2></a>
+
+
+    </header>
+
+
+    <div class="table">
+        <table class="table_inv">
+            <tr>
+                <th>Пользователь</th>
+                <th>Артикул</th>
+                <th>Наименование</th>
+                <th>Единица</th>
+                <th>Найдено</th>
+                <th>Дата время</th>
+                <th>Редактировать</th>
+            </tr>
+            {% for d in user_set_invent %}
+                <tr>
+                    <td>{{ d.user }}</td>
+                    <td>{{ d.product.article }}</td>
+                    <td>{{ d.product.title }}</td>
+                    <td>{{ d.product.base_unit }}</td>
+                    <td>{{ d.quantity_ord }}</td>
+                    <td>{{ d.created_at }}</td>
+                    <td><a href="{% url 'delete' d.id %}">Удалить</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
 </body>
 </html>

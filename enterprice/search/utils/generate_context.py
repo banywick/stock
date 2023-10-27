@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from ..models import Remains, RemainsInventory
 from ..forms import InputValue
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, F
 
 from ..utils_sql import get_doc_name
 
@@ -56,6 +56,8 @@ def get_context_input_filter_all(request):  # Поиск всему
 def get_inventory(request):
     unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(
         total_quantity=Sum('quantity'))
+
+
     form = InputValue(request.POST)
     if request.method == 'POST':
         values = request.POST['input'].split(' ')  # сбор значений с инпута

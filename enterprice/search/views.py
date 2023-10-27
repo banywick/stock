@@ -91,8 +91,8 @@ def get_main_inventory(request):
 
 
 def inventory_detail(request, article):
-    product = RemainsInventory.objects.get(article=article)
-    inventory = OrderInventory.objects.filter(product=product)
+    product = RemainsInventory.objects.filter(article=article).first()
+    user_set_invent = OrderInventory.objects.filter(product=product)
     if request.method == 'POST':
         quantity_ord = request.POST.get('quantity_set')
         user = request.user
@@ -101,6 +101,17 @@ def inventory_detail(request, article):
             user=user,
             quantity_ord=quantity_ord)
         inventory_item.save()
-    context = {'product': product, 'inventory': inventory}
+    context = {'product': product, 'user_set_invent': user_set_invent}
     return render(request, 'inventory_detail.html', context)
+
+
+def user_detail(request):
+    order = OrderInventory.objects.select_related('product').filter(user=request.user)
+    return render(request, 'user_detail.html', {'order': order})
+
+
+def delete_row(request, id_row):
+    order = OrderInventory.objects.get(id=id_row)
+    order.delete()
+    return redirect('inventory')
 

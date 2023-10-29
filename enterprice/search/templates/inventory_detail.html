@@ -14,16 +14,19 @@
             <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
         <div class="header_position_description">
-            <ul>
-                <li> Артикул {{ product.article }}</li>
-                <li>Остаток {{ product.quantity }} {{ product.base_unit }}</li>
-                <li>Посчитанная сумма ?</li>
-                <li>Осталось найти ?</li>
-            </ul>
+            {% for u in unic_sum_posit %}
+                <h3> Позиция {{ u.article }} - {{ u.title }}</h3>
+                <h3> Сумма по артикулу {{ unic_sum_posit_st }}</h3>
+                <h3> Сумма по артикулу {{ u.total_quantity }}</h3>
+                <h3> Посчитанная сумма {{ total_quantity_ord }}</h3>
+                <h3> осталось {{ remains_ord }}</h3>
+            {% endfor %}
+
+
         </div>
 
-         <div class="form_set_quantity">
-             <lable>Введите подсчитанное количество.</lable>
+        <div class="form_set_quantity">
+            <lable>Введите подсчитанное количество.</lable>
             <form action="" method="POST">
                 {% csrf_token %}
                 <input type="text" placeholder="количество найдено" name="quantity_set">

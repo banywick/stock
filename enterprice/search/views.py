@@ -1,12 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
 from .utils_sql import save_data_db
 from .models import Remains, OrderInventory, RemainsInventory
 from .utils.generate_context import get_context_input_filter_all, choice_project_dict, get_inventory
 from .utils.validators import validate_name_load_doc
+from django.urls import reverse
 
 
 def user_logout(request):
@@ -93,6 +96,20 @@ def get_main_inventory(request):
 def inventory_detail(request, article):
     product = RemainsInventory.objects.filter(article=article).first()
     user_set_invent = OrderInventory.objects.filter(product=product)
+
+    total_quantity_ord = OrderInventory.objects.filter(product=product).aggregate(total=Sum('quantity_ord'))['total']
+
+    unic_sum_posit = RemainsInventory.objects.filter(article=article).values('article', 'title').annotate(
+        total_quantity=Sum('quantity'))
+
+    unic_sum_posit_st = RemainsInventory.objects.filter(article=article).values('article', 'title').annotate(
+        total_quantity=Sum('quantity'))
+
+    for item in unic_sum_posit:
+        if item['total_quantity'] is not None and total_quantity_ord is not None:
+            item['total_quantity'] -= total_quantity_ord
+        else:
+            item['total_quantity'] = 0  # или любое другое значение по умолчанию
     if request.method == 'POST':
         quantity_ord = request.POST.get('quantity_set')
         user = request.user
@@ -101,7 +118,10 @@ def inventory_detail(request, article):
             user=user,
             quantity_ord=quantity_ord)
         inventory_item.save()
-    context = {'product': product, 'user_set_invent': user_set_invent}
+
+        return HttpResponseRedirect(reverse('inventory_detail', args=(article,)))
+    context = {'product': product, 'user_set_invent': user_set_invent, 'total_quantity_ord': total_quantity_ord,
+               'unic_sum_posit': unic_sum_posit, '   unic_sum_posit_st': unic_sum_posit_st}
     return render(request, 'inventory_detail.html', context)
 
 
@@ -113,5 +133,4 @@ def user_detail(request):
 def delete_row(request, id_row):
     order = OrderInventory.objects.get(id=id_row)
     order.delete()
-    return redirect('inventory')
-
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

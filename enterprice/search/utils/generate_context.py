@@ -54,10 +54,8 @@ def get_context_input_filter_all(request):  # Поиск всему
 
 
 def get_inventory(request):
-    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(
-        total_quantity=Sum('quantity'))
-
-
+    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(total_quantity=Sum('quantity'))
+    # print(unic_sum_posit)
     form = InputValue(request.POST)
     if request.method == 'POST':
         values = request.POST['input'].split(' ')  # сбор значений с инпута
@@ -71,3 +69,6 @@ def get_inventory(request):
             return {'form': form, 'e_art_title': error_message}
         return {'form': form, 'inventory': inventory}
     return {'form': form}
+
+
+

@@ -56,6 +56,8 @@
                 <th>Наименование</th>
                 <th>Базовая единица</th>
                 <th>Количество</th>
+                <th>Коментарий</th>
+                <th>Адрес</th>
                 <th>Статус</th>
             </tr>
             {% for i in inventory %}
@@ -64,6 +66,8 @@
                     <td class="title_table">{{ i.title }}</td>
                     <td>{{ i.base_unit }}</td>
                     <td>{{ i.total_quantity }}</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                 </tr>
             {% endfor %}

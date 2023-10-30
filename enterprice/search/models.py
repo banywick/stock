@@ -23,13 +23,14 @@ class RemainsInventory(models.Model):
     base_unit = models.CharField(max_length=10, null=True)
     quantity = models.DecimalField(blank=True, null=True, max_digits=15, decimal_places=2)
 
-
+    def __str__(self):
+        return f'{self.article}{self.title}{self.base_unit}{self.quantity}'
 
 
 class OrderInventory(models.Model):
     product = models.ForeignKey(RemainsInventory, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    quantity_ord = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
+    quantity_ord = models.DecimalField(blank=True, null=True, max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

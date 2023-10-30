@@ -118,7 +118,7 @@ header {
 }
 
 .article_table {
-    width: 300px;
+    width: 10%;
 }
 
 .article_table a {
@@ -132,5 +132,5 @@ header {
 }
 
 .title_table{
-    width: 50%;
+    width: 40%;
 }

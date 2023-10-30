@@ -13,30 +13,44 @@
         <div class="header_logo">
             <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
-        <div class="header_position_description">
-            {% for u in unic_sum_posit %}
-                <h3> Позиция {{ u.article }} - {{ u.title }}</h3>
-                <h3> Сумма по артикулу {{ unic_sum_posit_st }}</h3>
-                <h3> Сумма по артикулу {{ u.total_quantity }}</h3>
-                <h3> Посчитанная сумма {{ total_quantity_ord }}</h3>
-                <h3> осталось {{ remains_ord }}</h3>
-            {% endfor %}
+        <div>
 
+            <h2>{{ product.title }} </h2>
+            <hr>
+            <h2>{{ product.article }} </h2>
 
         </div>
-
-        <div class="form_set_quantity">
-            <lable>Введите подсчитанное количество.</lable>
-            <form action="" method="POST">
-                {% csrf_token %}
-                <input type="text" placeholder="количество найдено" name="quantity_set">
-                <button class="find_button">отправить</button>
-            </form>
+        <div>
+            <p>Остаток</p>
+            <h2>{{ unic_sum_posit }}</h2>
         </div>
-        <a href="{% url 'inventory' %}"><h2> Продолжить поиск ➡️</h2></a>
+        <div>
+            <p>Осталось посчитать</p>
+            <h2>{{ remains_sum }}</h2>
+        </div>
+        <div>
+            <a href="{% url 'inventory' %}"><h2> Продолжить поиск ➡️</h2></a>
+        </div>
 
 
     </header>
+    <div class="header_position_description">
+        {#            {% for u in unic_sum_posit %}#}
+        {#                <h3> Позиция {{ u.article }} - {{ u.title }}</h3>#}
+        {#                <h3> Сумма по артикулу {{ unic_sum_posit_st }}</h3>#}
+        {#                <h3> Сумма по артикулу {{ u.total_quantity }}</h3>#}
+        {#                <h3> Посчитанная сумма {{ total_quantity_ord }}</h3>#}
+        {#                <h3> осталось {{ remains_ord }}</h3>#}
+        {#            {% endfor %}#}
+    </div>
+    <div class="form_set_quantity">
+        <lable>Введите подсчитанное количество.</lable>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="text" placeholder="количество найдено" name="quantity_set">
+            <button class="find_button">отправить</button>
+        </form>
+    </div>
 
 
     <div class="table">
@@ -51,6 +65,7 @@
                 <th>Редактировать</th>
             </tr>
             {% for d in user_set_invent %}
+
                 <tr>
                     <td>{{ d.user }}</td>
                     <td>{{ d.product.article }}</td>

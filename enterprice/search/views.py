@@ -1,13 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
 from .utils_sql import save_data_db
-from .models import Remains, OrderInventory, RemainsInventory
-from .utils.generate_context import get_context_input_filter_all, choice_project_dict, get_inventory
+from .models import Remains, OrderInventory
+from .utils.generate_context import get_context_input_filter_all, choice_project_dict, get_inventory, get_one_product, \
+    get_user_set_invent, get_total_quantity_ord, get_unic_sum_posit, calculate_remains_sum, create_inventory_item, \
+    handle_uploaded_file
 from .utils.validators import validate_name_load_doc
 from django.urls import reverse
 
@@ -39,22 +40,16 @@ def get_main_page(request):
 
 @login_required
 def update_load_document(request):
-    doc = None
+    doc = DocumentForm()
     error_massage = ''
     if request.method == 'POST' and request.FILES:
-        doc = DocumentForm(request.POST, request.FILES)
-        error_massage = validate_name_load_doc(request)
+        doc, error_massage = handle_uploaded_file(request)
         if not error_massage:
-            try:
-                doc.save()
-                save_data_db()
-                return redirect('find')
-            except IOError:
-                messages.error(request, 'Произошла ошибка! Проверьте пожалуйта файл который вы загружаете. Ошибка')
-                return render(request, 'update.html', {'doc': doc})
+            return redirect('find')
+        else:
+            messages.error(request, error_massage)
     else:
-        doc = DocumentForm()
-    messages.error(request, error_massage)
+        messages.error(request, error_massage)
     return render(request, 'update.html', {'doc': doc, 'error_massage': error_massage})
 
 
@@ -94,35 +89,24 @@ def get_main_inventory(request):
 
 
 def inventory_detail(request, article):
-    product = RemainsInventory.objects.filter(article=article).first()
-    user_set_invent = OrderInventory.objects.filter(product=product)
-
-    total_quantity_ord = OrderInventory.objects.filter(product=product).aggregate(total=Sum('quantity_ord'))['total']
-
-    unic_sum_posit = RemainsInventory.objects.filter(article=article).values('article', 'title').annotate(
-        total_quantity=Sum('quantity'))
-
-    unic_sum_posit_st = RemainsInventory.objects.filter(article=article).values('article', 'title').annotate(
-        total_quantity=Sum('quantity'))
-
-    for item in unic_sum_posit:
-        if item['total_quantity'] is not None and total_quantity_ord is not None:
-            item['total_quantity'] -= total_quantity_ord
-        else:
-            item['total_quantity'] = 0  # или любое другое значение по умолчанию
+    product = get_one_product(article)
+    user_set_invent = get_user_set_invent(product)
+    total_quantity_ord = get_total_quantity_ord(product)
+    unic_sum_posit = get_unic_sum_posit(article)
+    remains_sum = calculate_remains_sum(unic_sum_posit, total_quantity_ord)
     if request.method == 'POST':
         quantity_ord = request.POST.get('quantity_set')
         user = request.user
-        inventory_item = OrderInventory.objects.create(
-            product=product,
-            user=user,
-            quantity_ord=quantity_ord)
-        inventory_item.save()
-
+        create_inventory_item(product, user, quantity_ord)
         return HttpResponseRedirect(reverse('inventory_detail', args=(article,)))
-    context = {'product': product, 'user_set_invent': user_set_invent, 'total_quantity_ord': total_quantity_ord,
-               'unic_sum_posit': unic_sum_posit, '   unic_sum_posit_st': unic_sum_posit_st}
-    return render(request, 'inventory_detail.html', context)
+
+    context = {'product': product, 'user_set_invent': user_set_invent,
+               'total_quantity_ord': total_quantity_ord, 'unic_sum_posit': unic_sum_posit, 'remains_sum': remains_sum}
+    return render(request, 'inventory_detail.html', context=context)
+
+
+
+
 
 
 def user_detail(request):

@@ -1,11 +1,29 @@
-from django.shortcuts import redirect
-from ..models import Remains, RemainsInventory
-from ..forms import InputValue
-from django.db.models import Q, Sum, F
 
-from ..utils_sql import get_doc_name
+from django.shortcuts import redirect, render
+
+from .validators import validate_name_load_doc
+from ..models import Remains, RemainsInventory, OrderInventory
+from ..forms import InputValue, DocumentForm
+from django.db.models import Q, Sum
+
+from ..utils_sql import save_data_db
 
 choice_project = dict()  # Хранилище выбранных проектов
+
+def handle_uploaded_file(request):
+    doc = DocumentForm(request.POST, request.FILES)
+    error_massage = validate_name_load_doc(request)
+    if not error_massage:
+        try:
+            doc.save()
+            save_data_db()
+        except IOError:
+            error_massage = 'Произошла ошибка! Проверьте пожалуйта файл который вы загружаете. Ошибка'
+    return doc, error_massage
+
+
+
+
 
 
 def clear_sort(request):
@@ -54,7 +72,8 @@ def get_context_input_filter_all(request):  # Поиск всему
 
 
 def get_inventory(request):
-    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(total_quantity=Sum('quantity'))
+    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(
+        total_quantity=Sum('quantity'))
     # print(unic_sum_posit)
     form = InputValue(request.POST)
     if request.method == 'POST':
@@ -71,4 +90,25 @@ def get_inventory(request):
     return {'form': form}
 
 
+def get_one_product(article):
+    return RemainsInventory.objects.filter(article=article).first()
 
+def get_user_set_invent(product):
+    return OrderInventory.objects.filter(product=product)
+
+def get_total_quantity_ord(product):
+    total = OrderInventory.objects.filter(product=product).aggregate(total=Sum('quantity_ord'))['total']
+    return total if total is not None else 0
+
+def get_unic_sum_posit(article):
+    return RemainsInventory.objects.filter(article=article).aggregate(sum_art=Sum('quantity'))['sum_art']
+
+def calculate_remains_sum(unic_sum_posit, total_quantity_ord):
+    return unic_sum_posit - total_quantity_ord if unic_sum_posit - total_quantity_ord >= 0 else 'ошибка'
+
+def create_inventory_item(product, user, quantity_ord):
+    inventory_item = OrderInventory.objects.create(
+        product=product,
+        user=user,
+        quantity_ord=quantity_ord)
+    inventory_item.save()

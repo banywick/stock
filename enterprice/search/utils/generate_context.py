@@ -104,7 +104,7 @@ def get_unic_sum_posit(article):
     return RemainsInventory.objects.filter(article=article).aggregate(sum_art=Sum('quantity'))['sum_art']
 
 def calculate_remains_sum(unic_sum_posit, total_quantity_ord):
-    return unic_sum_posit - total_quantity_ord if unic_sum_posit - total_quantity_ord >= 0 else 'ошибка'
+    return unic_sum_posit - total_quantity_ord if unic_sum_posit - total_quantity_ord >= 0 else 'Обнаружен излишек товара!'
 
 def create_inventory_item(product, user, quantity_ord):
     inventory_item = OrderInventory.objects.create(

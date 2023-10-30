@@ -28,56 +28,71 @@
             <p>Осталось посчитать</p>
             <h2>{{ remains_sum }}</h2>
         </div>
+
+
         <div>
             <a href="{% url 'inventory' %}"><h2> Продолжить поиск ➡️</h2></a>
+        </div>
+        <h2>Статус >>> </h2>
+        <div class="{% if remains_sum > 0 %}blue
+        {% elif remains_sum == 0 %}green
+        {% else %}red
+        {% endif %}">
+            <h2>{% if remains_sum > 0 %} В ожидании
+            {% elif remains_sum == 0 %} Позиция сошлась
+            {% else %} Излишки
+            {% endif %}
+            </h2>
         </div>
 
 
     </header>
-    <div class="header_position_description">
-        {#            {% for u in unic_sum_posit %}#}
-        {#                <h3> Позиция {{ u.article }} - {{ u.title }}</h3>#}
-        {#                <h3> Сумма по артикулу {{ unic_sum_posit_st }}</h3>#}
-        {#                <h3> Сумма по артикулу {{ u.total_quantity }}</h3>#}
-        {#                <h3> Посчитанная сумма {{ total_quantity_ord }}</h3>#}
-        {#                <h3> осталось {{ remains_ord }}</h3>#}
-        {#            {% endfor %}#}
-    </div>
-    <div class="form_set_quantity">
-        <lable>Введите подсчитанное количество.</lable>
-        <form action="" method="POST">
-            {% csrf_token %}
-            <input type="text" placeholder="количество найдено" name="quantity_set">
-            <button class="find_button">отправить</button>
-        </form>
-    </div>
+
+</div>
+<div class="header_position_description">
+    {#            {% for u in unic_sum_posit %}#}
+    {#                <h3> Позиция {{ u.article }} - {{ u.title }}</h3>#}
+    {#                <h3> Сумма по артикулу {{ unic_sum_posit_st }}</h3>#}
+    {#                <h3> Сумма по артикулу {{ u.total_quantity }}</h3>#}
+    {#                <h3> Посчитанная сумма {{ total_quantity_ord }}</h3>#}
+    {#                <h3> осталось {{ remains_ord }}</h3>#}
+    {#            {% endfor %}#}
+</div>
+<div class="form_set_quantity">
+    <lable>Введите подсчитанное количество.</lable>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="количество найдено" name="quantity_set">
+        <button class="find_button">отправить</button>
+    </form>
+</div>
 
 
-    <div class="table">
-        <table class="table_inv">
+<div class="table">
+    <table class="table_inv">
+        <tr>
+            <th>Пользователь</th>
+            <th>Артикул</th>
+            <th>Наименование</th>
+            <th>Единица</th>
+            <th>Найдено</th>
+            <th>Дата время</th>
+            <th>Редактировать</th>
+        </tr>
+        {% for d in user_set_invent %}
+
             <tr>
-                <th>Пользователь</th>
-                <th>Артикул</th>
-                <th>Наименование</th>
-                <th>Единица</th>
-                <th>Найдено</th>
-                <th>Дата время</th>
-                <th>Редактировать</th>
+                <td>{{ d.user }}</td>
+                <td>{{ d.product.article }}</td>
+                <td>{{ d.product.title }}</td>
+                <td>{{ d.product.base_unit }}</td>
+                <td>{{ d.quantity_ord }}</td>
+                <td>{{ d.created_at }}</td>
+                <td><a href="{% url 'delete' d.id %}">Удалить</a></td>
             </tr>
-            {% for d in user_set_invent %}
-
-                <tr>
-                    <td>{{ d.user }}</td>
-                    <td>{{ d.product.article }}</td>
-                    <td>{{ d.product.title }}</td>
-                    <td>{{ d.product.base_unit }}</td>
-                    <td>{{ d.quantity_ord }}</td>
-                    <td>{{ d.created_at }}</td>
-                    <td><a href="{% url 'delete' d.id %}">Удалить</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
+        {% endfor %}
+    </table>
+</div>
 </div>
 
 

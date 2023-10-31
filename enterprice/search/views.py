@@ -8,7 +8,7 @@ from .utils_sql import save_data_db
 from .models import Remains, OrderInventory
 from .utils.generate_context import get_context_input_filter_all, choice_project_dict, get_inventory, get_one_product, \
     get_user_set_invent, get_total_quantity_ord, get_unic_sum_posit, calculate_remains_sum, create_inventory_item, \
-    handle_uploaded_file
+    handle_uploaded_file, get_unic_sum_posit_remains_now
 from .utils.validators import validate_name_load_doc
 from django.urls import reverse
 
@@ -94,6 +94,8 @@ def inventory_detail(request, article):
     total_quantity_ord = get_total_quantity_ord(product)
     unic_sum_posit = get_unic_sum_posit(article)
     remains_sum = calculate_remains_sum(unic_sum_posit, total_quantity_ord)
+    sum_remains_now = get_unic_sum_posit_remains_now(article)
+    print(product, '$$$$$$$$$$$$$$$$$$$$$$$$$$')
     if request.method == 'POST':
         quantity_ord = request.POST.get('quantity_set')
         user = request.user
@@ -101,12 +103,10 @@ def inventory_detail(request, article):
         return HttpResponseRedirect(reverse('inventory_detail', args=(article,)))
 
     context = {'product': product, 'user_set_invent': user_set_invent,
-               'total_quantity_ord': total_quantity_ord, 'unic_sum_posit': unic_sum_posit, 'remains_sum': remains_sum}
+               'total_quantity_ord': total_quantity_ord, 'unic_sum_posit': unic_sum_posit, 'remains_sum': remains_sum,
+               'sum_remains_now': sum_remains_now}
+    print(context)
     return render(request, 'inventory_detail.html', context=context)
-
-
-
-
 
 
 def user_detail(request):

@@ -34,4 +34,4 @@ class OrderInventory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'OrderInventory (id: {self.id}, product: {self.product.title} {self.product.article} {self.total_quantity}'
+        return f'OrderInventory (id: {self.id}, product: {self.product.title} {self.product.article}'

@@ -14,7 +14,7 @@
             <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
         <div>
-
+{#            <p>Остаток на сегодня {{ sum_remains_now }} {{ product.base_unit }}</p>
             <h2>{{ product.title }} </h2>
             <hr>
             <h2>{{ product.article }} </h2>
@@ -44,20 +44,11 @@
             {% endif %}
             </h2>
         </div>
-
-
     </header>
 
-</div>
-<div class="header_position_description">
-    {#            {% for u in unic_sum_posit %}#}
-    {#                <h3> Позиция {{ u.article }} - {{ u.title }}</h3>#}
-    {#                <h3> Сумма по артикулу {{ unic_sum_posit_st }}</h3>#}
-    {#                <h3> Сумма по артикулу {{ u.total_quantity }}</h3>#}
-    {#                <h3> Посчитанная сумма {{ total_quantity_ord }}</h3>#}
-    {#                <h3> осталось {{ remains_ord }}</h3>#}
-    {#            {% endfor %}#}
-</div>
+
+
+
 <div class="form_set_quantity">
     <lable>Введите подсчитанное количество.</lable>
     <form action="" method="POST">

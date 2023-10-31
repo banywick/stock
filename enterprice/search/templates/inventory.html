@@ -13,8 +13,11 @@
         <div class="header_logo">
             <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
-
+        <div>Инвентаризация. <br>
+            Остаток  ТМЦ от 03.10.23
+        </div>
         <div class="header_find_container">
+
             <div class="form_input">
                 <form method="POST" id="find_form">
                     {% csrf_token %}

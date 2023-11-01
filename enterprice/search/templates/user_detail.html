@@ -25,6 +25,8 @@
                 <th>Единица</th>
                 <th>Найдено</th>
                 <th>Дата время</th>
+                <th>Адрес</th>
+                <th>Коментарий</th>
             </tr>
             {% for o in order %}
                 <tr>
@@ -34,6 +36,8 @@
                     <td>{{ o.product.base_unit }}</td>
                     <td>{{o.quantity_ord  }}</td>
                     <td>{{ o.created_at }}</td>
+                    <td>{{ o.address }}</td>
+                    <td>{{ o.comment }}</td>
 
                 </tr>
             {% endfor %}

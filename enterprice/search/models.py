@@ -22,6 +22,7 @@ class RemainsInventory(models.Model):
     title = models.TextField(null=True)
     base_unit = models.CharField(max_length=10, null=True)
     quantity = models.DecimalField(blank=True, null=True, max_digits=15, decimal_places=2)
+    status = models.CharField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.article}{self.title}{self.base_unit}{self.quantity}'
@@ -32,6 +33,8 @@ class OrderInventory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     quantity_ord = models.DecimalField(blank=True, null=True, max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
+    address = models.CharField(max_length=100,blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f'OrderInventory (id: {self.id}, product: {self.product.title} {self.product.article}'

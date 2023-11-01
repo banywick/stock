@@ -1,4 +1,3 @@
-
 from django.shortcuts import redirect, render
 
 from .validators import validate_name_load_doc
@@ -9,6 +8,7 @@ from django.db.models import Q, Sum
 from ..utils_sql import save_data_db
 
 choice_project = dict()  # Хранилище выбранных проектов
+
 
 def handle_uploaded_file(request):
     doc = DocumentForm(request.POST, request.FILES)
@@ -22,10 +22,6 @@ def handle_uploaded_file(request):
     return doc, error_massage
 
 
-
-
-
-
 def clear_sort(request):
     if request.method == 'POST':
         choice_project.clear()
@@ -36,7 +32,7 @@ def choice_project_dict(request):  # Словарь из выбранных пр
     all_project = Remains.objects.values_list('project',
                                               flat=True).distinct()  # переводит из картежа в список уникальные значения
     projects = request.POST.getlist('data_project')  # Выбор пользователя
-    print(projects, '*******************')
+
     for i, project in enumerate(projects):
         choice_project[i] = project  # добавляем выбор в дикт
     return {'all_project': all_project, 'project': choice_project.values()}
@@ -74,7 +70,7 @@ def get_context_input_filter_all(request):  # Поиск всему
 def get_inventory(request):
     unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(
         total_quantity=Sum('quantity'))
-    # print(unic_sum_posit)
+
     form = InputValue(request.POST)
     if request.method == 'POST':
         values = request.POST['input'].split(' ')  # сбор значений с инпута
@@ -85,35 +81,52 @@ def get_inventory(request):
         inventory = unic_sum_posit.filter(query) | unic_sum_posit.filter(
             article__contains=request.POST['input'])
         if not inventory.exists():  # если ничего не найдено из нескольких значений в инпуте
-            return {'form': form, 'e_art_title': error_message}
-        return {'form': form, 'inventory': inventory}
-    return {'form': form}
+            return {'form': form, 'e_art_title': error_message}  # post если не найдено
+        return {'form': form, 'inventory': inventory, 'status': get_status_position}  # post
+    return {'form': form}  # get
 
 
 def get_one_product(article):
     return RemainsInventory.objects.filter(article=article).first()
 
+
 def get_user_set_invent(product):
     return OrderInventory.objects.filter(product=product)
+
 
 def get_total_quantity_ord(product):
     total = OrderInventory.objects.filter(product=product).aggregate(total=Sum('quantity_ord'))['total']
     return total if total is not None else 0
 
+
 def get_unic_sum_posit(article):
     return RemainsInventory.objects.filter(article=article).aggregate(sum_art=Sum('quantity'))['sum_art']
 
-def get_unic_sum_posit_remains_now(article): # остаток по последнему загруженному документу
-    return Remains.objects.filter(article=article).aggregate(sum_art_rem_now=Sum('quantity'))['sum_art_rem_now']
 
+def get_unic_sum_posit_remains_now(article):  # остаток по последнему загруженному документу
+    return Remains.objects.filter(article=article).aggregate(sum_art_rem_now=Sum('quantity'))['sum_art_rem_now']
 
 
 def calculate_remains_sum(unic_sum_posit, total_quantity_ord):
     return unic_sum_posit - total_quantity_ord if unic_sum_posit - total_quantity_ord >= 0 else 'Обнаружен излишек товара!'
 
-def create_inventory_item(product, user, quantity_ord):
+
+def get_status_position(article, unic_sum_posit, total_quantity_ord):
+    update_status = None  # Значение по умолчанию
+    if calculate_remains_sum(unic_sum_posit, total_quantity_ord) == 0:
+        status = 'Сошлось'
+        update_status = RemainsInventory.objects.filter(article=article).update(status=status)
+    if calculate_remains_sum(unic_sum_posit, total_quantity_ord) < 0:
+        status = 'Излишек'
+        update_status = RemainsInventory.objects.filter(article=article).update(status=status)
+    return update_status
+
+
+def create_inventory_item(product, user, quantity_ord, address, comment):
     inventory_item = OrderInventory.objects.create(
         product=product,
         user=user,
-        quantity_ord=quantity_ord)
+        quantity_ord=quantity_ord,
+        address=address,
+        comment=comment)
     inventory_item.save()

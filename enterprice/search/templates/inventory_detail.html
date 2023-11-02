@@ -14,82 +14,91 @@
             <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
         <div>
-            <p>Движение товара {{ move_product }}</p>
-            <p>Остаток на сегодня {{ sum_remains_now }} {{ product.base_unit }}</p>
-            <p>{{ product.title }} </p>
-            <p>{{ product.article }} </p>
-
-        </div>
-        <div>
-            <p>Остаток</p>
-            <h2>{{ unic_sum_posit }}</h2>
-        </div>
-        <div>
-            <p>Осталось посчитать</p>
-            <h2>{{ remains_sum }}</h2>
-        </div>
-
-
-        <div>
             <a href="{% url 'inventory' %}"><h2> Продолжить поиск ➡️</h2></a>
         </div>
-        <h2>Статус >>> </h2>
 
-        <div class="{% if remains_sum > 0 %}blue
-        {% elif remains_sum == 0 %}green
-        {% else %}red
-        {% endif %}">
-            <h2>{% if remains_sum > 0 %} В работе
-            {% elif remains_sum == 0 %} Позиция сошлась
-            {% else %} Излишки
-            {% endif %}
-            </h2>
+
+        <div class="form_set_quantity">
+            <lable>Введите подсчитанное количество.</lable>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="количество найдено" name="quantity_set" required="required">
+                <input type="text" placeholder="адрес" name="address">
+                <input type="text" placeholder="Коментарий" name="comment">
+                <button class="find_button">отправить</button>
+            </form>
         </div>
     </header>
-
-
-    <div class="form_set_quantity">
-        <lable>Введите подсчитанное количество.</lable>
-        <form action="" method="POST">
-            {% csrf_token %}
-            <input type="text" placeholder="количество найдено" name="quantity_set" required="required">
-            <input type="text" placeholder="адрес" name="address">
-            <input type="text" placeholder="Коментарий" name="comment">
-            <button class="find_button">отправить</button>
-        </form>
-    </div>
-
-
     <div class="table">
         <table class="table_inv">
             <tr>
-                <th>Пользователь</th>
                 <th>Артикул</th>
                 <th>Наименование</th>
                 <th>Единица</th>
-                <th>Найдено</th>
-                <th>Дата время</th>
-                <th>Адрес</th>
-                <th>Коментарий</th>
-                <th>Редактировать</th>
-            </tr>
-            {% for d in user_set_invent %}
+                <th>Остаток по инвентаризации</th>
+                <th>Осталось посчитать</th>
+                <th>Остаток на сегодня</th>
+                <th>Движение товара</th>
 
-                <tr>
-                    <td>{{ d.user }}</td>
-                    <td>{{ d.product.article }}</td>
-                    <td>{{ d.product.title }}</td>
-                    <td>{{ d.product.base_unit }}</td>
-                    <td>{{ d.quantity_ord }}</td>
-                    <td>{{ d.created_at }}</td>
-                    <td>{{ d.address }}</td>
-                    <td>{{ d.comment }}</td>
-                    <td><a href="{% url 'delete' d.id %}">Удалить</a></td>
-                </tr>
-            {% endfor %}
+                <th>Статус</th>
+
+            </tr>
+            <tr>
+                <td>{{ product.article }}</td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.base_unit }}</td>
+                <td>{{ unic_sum_posit }}</td>
+            <td>{{ remains_sum }}</td>
+                <td>{{ sum_remains_now }} </td>
+                <td>{{ move_product }}</td>
+
+                <td>
+                    <div class="{% if remains_sum > 0 and unic_sum_posit > 0 %}blue
+                        {% elif remains_sum == 0 %}green
+                        {% else %}red
+                        {% endif %}">
+                        {% if remains_sum > 0 %} В работе
+                        {% elif remains_sum == 0 %} Позиция сошлась
+                        {% else %} Излишки
+                        {% endif %}
+                    </div>
+
+
+                </td>
+            </tr>
         </table>
+
+
+        <div class="table">
+            <table class="table_inv">
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Артикул</th>
+                    <th>Наименование</th>
+                    <th>Единица</th>
+                    <th>Найдено</th>
+                    <th>Дата время</th>
+                    <th>Адрес</th>
+                    <th>Коментарий</th>
+                    <th>Редактировать</th>
+                </tr>
+                {% for d in user_set_invent %}
+
+                    <tr>
+                        <td>{{ d.user }}</td>
+                        <td>{{ d.product.article }}</td>
+                        <td>{{ d.product.title }}</td>
+                        <td>{{ d.product.base_unit }}</td>
+                        <td>{{ d.quantity_ord }}</td>
+                        <td>{{ d.created_at }}</td>
+                        <td>{{ d.address }}</td>
+                        <td>{{ d.comment }}</td>
+                        <td><a href="{% url 'delete' d.id %}">Удалить</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
-</div>
 
 
 </body>

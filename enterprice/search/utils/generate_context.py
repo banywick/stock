@@ -68,7 +68,7 @@ def get_context_input_filter_all(request):  # Поиск всему
 
 
 def get_inventory(request):
-    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit').annotate(
+    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit','status').annotate(
         total_quantity=Sum('quantity'))
 
     form = InputValue(request.POST)
@@ -82,7 +82,7 @@ def get_inventory(request):
             article__contains=request.POST['input'])
         if not inventory.exists():  # если ничего не найдено из нескольких значений в инпуте
             return {'form': form, 'e_art_title': error_message}  # post если не найдено
-        return {'form': form, 'inventory': inventory, 'status': get_status_position}  # post
+        return {'form': form, 'inventory': inventory}  # post
     return {'form': form}  # get
 
 
@@ -108,18 +108,13 @@ def get_unic_sum_posit_remains_now(article):  # остаток по послед
 
 
 def calculate_remains_sum(unic_sum_posit, total_quantity_ord):
-    return unic_sum_posit - total_quantity_ord if unic_sum_posit - total_quantity_ord >= 0 else 'Обнаружен излишек товара!'
+    result = unic_sum_posit - total_quantity_ord if unic_sum_posit - total_quantity_ord >= 0\
+        else unic_sum_posit - total_quantity_ord
+
+    return result
 
 
-def get_status_position(article, unic_sum_posit, total_quantity_ord):
-    update_status = None  # Значение по умолчанию
-    if calculate_remains_sum(unic_sum_posit, total_quantity_ord) == 0:
-        status = 'Сошлось'
-        update_status = RemainsInventory.objects.filter(article=article).update(status=status)
-    if calculate_remains_sum(unic_sum_posit, total_quantity_ord) < 0:
-        status = 'Излишек'
-        update_status = RemainsInventory.objects.filter(article=article).update(status=status)
-    return update_status
+
 
 
 def create_inventory_item(product, user, quantity_ord, address, comment):

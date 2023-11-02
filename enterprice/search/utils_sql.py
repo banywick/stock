@@ -55,7 +55,8 @@ def load_inventory_doc():
         con.execute(text("DELETE from search_remainsinventory"))  # отчищаем паблицу перед APPEND
         con.commit()
     df.columns = ['article', 'title', 'base_unit', 'quantity']  # Замена  на желаемые названия столбцов
-    # df['quantity'] = df['quantity'].astype(float).round(2)
+    df['quantity'] = df['quantity'].astype(float).round(2)
+    df['status'] = ''
     df.to_sql('search_remainsinventory', engine, if_exists='append', index_label='id')  # Запись данных в базу данных
 
 

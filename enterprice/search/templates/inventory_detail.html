@@ -14,10 +14,10 @@
             <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
         <div>
+            <p>Движение товара {{ move_product }}</p>
             <p>Остаток на сегодня {{ sum_remains_now }} {{ product.base_unit }}</p>
-            <h2>{{ product.title }} </h2>
-            <hr>
-            <h2>{{ product.article }} </h2>
+            <p>{{ product.title }} </p>
+            <p>{{ product.article }} </p>
 
         </div>
         <div>

@@ -5,10 +5,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import DocumentForm
 from .utils_sql import save_data_db
-from .models import Remains, OrderInventory
+from .models import Remains, OrderInventory, RemainsInventory
 from .utils.generate_context import get_context_input_filter_all, choice_project_dict, get_inventory, get_one_product, \
     get_user_set_invent, get_total_quantity_ord, get_unic_sum_posit, calculate_remains_sum, create_inventory_item, \
-    handle_uploaded_file, get_unic_sum_posit_remains_now, get_status_position
+    handle_uploaded_file, get_unic_sum_posit_remains_now
 from .utils.validators import validate_name_load_doc
 from django.urls import reverse
 
@@ -89,28 +89,28 @@ def get_main_inventory(request):
 
 
 def inventory_detail(request, article):
-
     product = get_one_product(article)
-    print(product)
     user_set_invent = get_user_set_invent(product)
     total_quantity_ord = get_total_quantity_ord(product)
+
     unic_sum_posit = get_unic_sum_posit(article)
     remains_sum = calculate_remains_sum(unic_sum_posit, total_quantity_ord)
+    sum_remains_now = "{:.2f}".format(get_unic_sum_posit_remains_now(article))
+    status = 'В работе' if remains_sum > 0 and total_quantity_ord > 0 else ('Сошлось' if remains_sum == 0 else f'Излишек {abs(remains_sum)}' if remains_sum < 0 else '')
+    print(status)
+    RemainsInventory.objects.filter(article=article).update(status=status)
+    move_product = float(sum_remains_now) - float(unic_sum_posit)
 
-    sum_remains_now = get_unic_sum_posit_remains_now(article)
     if request.method == 'POST':
         quantity_ord = request.POST.get('quantity_set')
         set_address = request.POST.get('address')
         set_comment = request.POST.get('comment')
         user = request.user
         create_inventory_item(product, user, quantity_ord, set_address, set_comment)
-        get_status_position(article,unic_sum_posit,total_quantity_ord)
         return HttpResponseRedirect(reverse('inventory_detail', args=(article,)))
-
     context = {'product': product, 'user_set_invent': user_set_invent,
                'total_quantity_ord': total_quantity_ord, 'unic_sum_posit': unic_sum_posit, 'remains_sum': remains_sum,
-               'sum_remains_now': sum_remains_now}
-
+               'sum_remains_now': sum_remains_now, 'move_product': move_product}
     return render(request, 'inventory_detail.html', context=context)
 
 

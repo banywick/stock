@@ -1,3 +1,5 @@
+import copy
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -90,23 +92,27 @@ def get_main_inventory(request):
 
 
 def inventory_detail(request, article):
-    product = get_one_product(article)
-    user_set_invent = get_user_set_invent(product)
-    total_quantity_ord = get_total_quantity_ord(product)
-    unic_sum_posit = get_unic_sum_posit(article)
-    remains_sum = calculate_remains_sum(unic_sum_posit, total_quantity_ord)
+    product = get_one_product(article)  # выбор первой позицци по артикулу для детализации
+    user_set_invent = get_user_set_invent(product)  # Фильтрация по выбору для всех пользователей
+    total_quantity_ord = get_total_quantity_ord(product)  # Посчитанно всеми пользователями
+
+    unic_sum_posit = get_unic_sum_posit(article)  # Остаток по инвентаризации
+    try:
+        # sum_remains_now = "{:.2f}".format(get_unic_sum_posit_remains_now(article))
+        sum_remains_now = get_unic_sum_posit_remains_now(article)  # Текущий остаток
+        move_product = float(sum_remains_now) - float(unic_sum_posit)  # текущий остаток минус остаток инвентаризации
+        move_product = "{:.2f}".format(move_product)
+    except:
+        sum_remains_now = 0
+        move_product = 0
+    remains_sum = calculate_remains_sum(sum_remains_now,
+                                        total_quantity_ord)  # тек остаток минус сумма подсчета пользователями (Движение)
+
     status = 'В работе' if remains_sum > 0 and total_quantity_ord > 0 else (
         'Сошлось' if remains_sum == 0 else f'Излишек {abs(remains_sum)}' if remains_sum < 0 else '')
-    RemainsInventory.objects.filter(article=article).update(status=status)
-    try:
-        sum_remains_now = "{:.2f}".format(get_unic_sum_posit_remains_now(article))
-        move_product = float(sum_remains_now) - float(unic_sum_posit)
-        move_product = "{:.2f}".format(move_product)
-        print('error')
-    except:
-        sum_remains_now = 'Позиции нет'
-        move_product = 0
-        print('exept')
+
+
+    RemainsInventory.objects.filter(article=article).update(status=status)  # обновляем статус по условию
 
     if request.method == 'POST':
         quantity_ord = request.POST.get('quantity_set')

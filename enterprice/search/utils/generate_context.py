@@ -68,7 +68,7 @@ def get_context_input_filter_all(request):  # Поиск всему
 
 
 def get_inventory(request):
-    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit','status').annotate(
+    unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit', 'status').annotate(
         total_quantity=Sum('quantity'))
 
     form = InputValue(request.POST)
@@ -104,16 +104,18 @@ def get_unic_sum_posit(article):
 
 
 def get_unic_sum_posit_remains_now(article):  # остаток по последнему загруженному документу
-    return Remains.objects.filter(article=article).aggregate(sum_art_rem_now=Sum('quantity'))['sum_art_rem_now']
+    if Remains.objects.filter(article__icontains=article).aggregate(sum_art_rem_now=Sum('quantity'))[
+        'sum_art_rem_now'] == None:
+        return 0
+    return Remains.objects.filter(article__icontains=article).aggregate(sum_art_rem_now=Sum('quantity'))[
+        'sum_art_rem_now']
 
 
-def calculate_remains_sum(sum_remains_now, total_quantity_ord):  #Осталось посчитать
-    result = sum_remains_now - total_quantity_ord if sum_remains_now - total_quantity_ord >= 0\
-        else sum_remains_now - total_quantity_ord
+def calculate_remains_sum(sum_remains_now, total_quantity_ord):  # Осталось посчитать
+    if sum_remains_now == None:  # если нет позиции в таблице остатки (Remains)
+        sum_remains_now = 0
+    result = float(sum_remains_now) - float(total_quantity_ord)
     return result
-
-
-
 
 
 def create_inventory_item(product, user, quantity_ord, address, comment):

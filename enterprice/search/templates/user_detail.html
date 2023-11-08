@@ -31,14 +31,15 @@
             {% for o in order %}
                 <tr>
                     <td>{{ user.username }}</td>
-                    <td>{{o.product.article  }}</td>
-                    <td>{{o.product.title  }}</td>
+                    <td class="article_table"><a
+                            href="{% url 'inventory_detail' o.product.article %}">{{ o.product.article }}</a></td>
+                    <td class="article_table"><a
+                            href="{% url 'inventory_detail' o.product.article %}">{{ o.product.title }}</a></td>
                     <td>{{ o.product.base_unit }}</td>
-                    <td>{{o.quantity_ord  }}</td>
+                    <td>{{ o.quantity_ord }}</td>
                     <td>{{ o.created_at }}</td>
                     <td>{{ o.address }}</td>
                     <td>{{ o.comment }}</td>
-
                 </tr>
             {% endfor %}
         </table>

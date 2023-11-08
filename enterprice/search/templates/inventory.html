@@ -13,12 +13,19 @@
         <div class="header_logo">
             <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
-        <div>Инвентаризация. <br>
-            Остаток ТМЦ от 03.10.23
+        <div class="info_container">
+            <div>Инвентаризация. <br>
+                Остаток ТМЦ от 03.10.23
+            </div>
+            <div class="errors">
+                <H3>{{ e_art_title }}</H3>
+            </div>
         </div>
+
         <div class="header_find_container">
 
             <div class="form_input">
+
                 <form method="POST" id="find_form">
                     {% csrf_token %}
                     {{ form.as_p }}
@@ -32,10 +39,10 @@
         </div>
         <div class="info">
             <ul>
-                <li>Выполнеено - 26%</li>
-                <li>Поститанно 2487 позиций</li>
-                <li>Общее количество позиций - 65841</li>
-                <li>Осталось - 32547</li>
+                <li>Выполнеено - {{ percentage }}</li>
+                <li>Поститанно - {{ not_empty_row }} </li>
+                <li>Общее количество  - {{ count_row }}</li>
+                <li>Осталось - {{ remainder_row }}</li>
             </ul>
         </div>
 
@@ -51,6 +58,7 @@
     </header>
 
 
+
     <div class="table">
         <table class="table_inv">
             <tr>
@@ -63,11 +71,14 @@
             {% for i in inventory %}
                 <tr>
                     <td class="article_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.article }}</a></td>
-                    <td class="title_table">{{ i.title }}</td>
+                    <td class="title_table"><a href="{% url 'inventory_detail' i.article %}">{{ i.title }}</a></td>
                     <td>{{ i.base_unit }}</td>
                     <td>{{ i.total_quantity }}</td>
-                    <td>
-                        {% if i.status %}{{ i.status }}{% else %}{% endif %}
+                    <td class="{% if  i.status == 'Сошлось' %} green
+                            {% elif  i.status == 'В работе' %} yellow
+                            {% elif  i.status == 'Перепроверить' %} red
+                            {% endif %}">
+                            {% if i.status %}{{ i.status }}{% else %}{% endif %}
                     </td>
 
 

@@ -17,7 +17,6 @@
             <a href="{% url 'inventory' %}"><h2> Продолжить поиск ➡️</h2></a>
         </div>
 
-
         <div class="form_set_quantity">
             <lable>Введите подсчитанное количество.</lable>
             <form action="" method="POST">
@@ -32,7 +31,7 @@
         <div>
             <h3>Выберите статус позийии</h3>
             <a href="{% url 'set_status'  'Сошлось' product.article %}">Сошлось</a>
-            <a href="{% url 'set_status'  'Излишки' product.article %}">Перепроверить</a>
+            <a href="{% url 'set_status'  'Перепроверить' product.article %}">Перепроверить</a>
             <a href="{% url 'set_status'  'В работе' product.article %}">В работе</a>
         </div>
 

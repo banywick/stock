@@ -114,6 +114,7 @@ def inventory_detail(request, article):
         create_inventory_item(product, user, quantity_ord, set_address, set_comment)
         return HttpResponseRedirect(reverse('inventory_detail', args=(article,)))
     get_status = RemainsInventory.objects.filter(article=article).first().status
+
     context = {'product': product, 'user_set_invent': user_set_invent,
                'total_quantity_ord': total_quantity_ord, 'unic_sum_posit': unic_sum_posit, 'remains_sum': remains_sum,
                'sum_remains_now': sum_remains_now, 'move_product': move_product, 'get_status':get_status}

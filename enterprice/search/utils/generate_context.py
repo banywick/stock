@@ -70,7 +70,10 @@ def get_context_input_filter_all(request):  # Поиск всему
 def get_inventory(request):
     unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit', 'status').annotate(
         total_quantity=Sum('quantity'))
-
+    count_row = RemainsInventory.objects.values('article').distinct().count()  # количество уникальных строк
+    not_empty_row = RemainsInventory.objects.filter(status='Сошлось').count()  # отмеченные как Сошлось
+    remainder_row = count_row - not_empty_row
+    percentage = f'{(not_empty_row / count_row) * 100:.2f}%'
     form = InputValue(request.POST)
     if request.method == 'POST':
         values = request.POST['input'].split(' ')  # сбор значений с инпута
@@ -82,8 +85,9 @@ def get_inventory(request):
             article__contains=request.POST['input'])
         if not inventory.exists():  # если ничего не найдено из нескольких значений в инпуте
             return {'form': form, 'e_art_title': error_message}  # post если не найдено
-        return {'form': form, 'inventory': inventory}  # post
-    return {'form': form}  # get
+        return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+                'remainder_row': remainder_row, 'percentage': percentage}  # post
+    return {'form': form, 'count_row': count_row, 'not_empty_row': not_empty_row, 'remainder_row': remainder_row, 'percentage': percentage}  # get
 
 
 def get_one_product(article):

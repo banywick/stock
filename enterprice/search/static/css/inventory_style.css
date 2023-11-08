@@ -11,6 +11,11 @@ header {
 
 }
 
+.errors h3{
+    color: #be4f4f;
+
+}
+
 
 .header_logo img {
     height: 140px;
@@ -135,4 +140,27 @@ header {
 
 .title_table {
     width: 40%;
+}
+
+.title_table a {
+    text-decoration: none;
+    color: black;
+}
+
+.title_table a:hover {
+    background-color: rgba(252, 230, 7, 0.68);
+
+}
+
+.red {
+    background-color: rgba(255, 0, 0, 0.44);
+}
+
+
+.green {
+    background-color: rgba(0, 128, 0, 0.57);
+}
+
+.yellow{
+    background-color: rgba(255, 255, 0, 0.56);
 }

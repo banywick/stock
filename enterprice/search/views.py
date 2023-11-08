@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import DocumentForm
 from .utils_sql import save_data_db
 from .models import Remains, OrderInventory, RemainsInventory
@@ -99,32 +99,11 @@ def inventory_detail(request, article):
 
     sum_remains_now = "{:.2f}".format(get_unic_sum_posit_remains_now(article))  # Текущий остаток
     sum_remains_now = float(sum_remains_now)  # пеобразование 2 знака после точки
-    move_product = float(sum_remains_now) - float(unic_sum_posit)  # текущий остаток минус остаток инвентаризации (движение)
+    move_product = float(sum_remains_now) - float(
+        unic_sum_posit)  # текущий остаток минус остаток инвентаризации (движение)
+    move_product = "{:.2f}".format(move_product)
     remains_sum = calculate_remains_sum(sum_remains_now,
                                         total_quantity_ord)  # тек остаток минус сумма подсчета пользователями (Движение)
-
-    fix_status = {}
-    status = None
-    if sum_remains_now == 0:  # если текущий остаток равен 0
-       fix_status['status'] = 'Сошлось <A>'  # Создаем статус сошлось автоматически
-
-
-    # elif remains_sum > 0 and total_quantity_ord > 0:
-    #     status = 'В работе'
-    # elif remains_sum == 0 and not fix_status:
-    #     status = 'Сошлось'
-    # elif remains_sum < 0:
-    #     status = f'Излишек {abs(remains_sum)}'
-    # elif fix_status.get('status') == 'Сошлось <A>':
-    #     status = fix_status.get('status')
-    # else:
-    #     status = ''
-    print(fix_status.get('status'))
-    RemainsInventory.objects.filter(article=article).update(status=status)  # обновляем статус по условию 2
-
-    # status = 'В работе' if remains_sum > 0 and total_quantity_ord > 0 else (
-    #     'Сошлось' if remains_sum == 0 else f'Излишек {abs(remains_sum)}' if remains_sum < 0 else '')
-    # RemainsInventory.objects.filter(article=article).update(status=status)
 
     if request.method == 'POST':
         quantity_ord = request.POST.get('quantity_set')
@@ -134,9 +113,10 @@ def inventory_detail(request, article):
 
         create_inventory_item(product, user, quantity_ord, set_address, set_comment)
         return HttpResponseRedirect(reverse('inventory_detail', args=(article,)))
+    get_status = RemainsInventory.objects.filter(article=article).first().status
     context = {'product': product, 'user_set_invent': user_set_invent,
                'total_quantity_ord': total_quantity_ord, 'unic_sum_posit': unic_sum_posit, 'remains_sum': remains_sum,
-               'sum_remains_now': sum_remains_now, 'move_product': move_product}
+               'sum_remains_now': sum_remains_now, 'move_product': move_product, 'get_status':get_status}
     return render(request, 'inventory_detail.html', context=context)
 
 
@@ -149,3 +129,9 @@ def delete_row(request, id_row):
     order = OrderInventory.objects.get(id=id_row)
     order.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def set_status(request, status, article):
+    RemainsInventory.objects.filter(article=article).update(status=status)
+
+    return redirect('inventory_detail', article=article)

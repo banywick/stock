@@ -29,13 +29,13 @@
             </form>
         </div>
 
-{#        {% if sum_remains_now == 0  %}#}
-{#        <p>Остаток позиции на сегодня  {{ sum_remains_now }} </p>#}
-{#        <form action="" method="post">#}
-{#        {% csrf_token %}#}
-{#            <button type="submit" name="mark_selection" value="55">Отметить позицию как выполненную</button>#}
-{#        </form>#}
-{#        {% endif %}#}
+        <div>
+            <h3>Выберите статус позийии</h3>
+            <a href="{% url 'set_status'  'Сошлось' product.article %}">Сошлось</a>
+            <a href="{% url 'set_status'  'Излишки' product.article %}">Перепроверить</a>
+            <a href="{% url 'set_status'  'В работе' product.article %}">В работе</a>
+        </div>
+
 
     </header>
     <div class="table">
@@ -47,12 +47,11 @@
                 <th>Остаток по инвентаризации</th>
                 {% if remains_sum < 0 %}
                     <td style="background-color: #e22b2b">Изилек!!!!</td>
-                {% else  %}
-                <th>Осталось посчитать</th>
+                {% else %}
+                    <th>Осталось посчитать</th>
                 {% endif %}
                 <th>Остаток на сегодня</th>
                 <th>Движение товара</th>
-
                 <th>Статус</th>
 
             </tr>
@@ -64,23 +63,8 @@
                 <td>{{ remains_sum }}</td>
                 <td>{{ sum_remains_now }} </td>
                 <td>{{ move_product }}</td>
+                <td>{{ get_status }}</td>
 
-                <td>
-                    <div class="{% if total_quantity_ord == 0 %} white
-                                {% elif remains_sum > 0 and unic_sum_posit > 0 %}blue
-                                {% elif remains_sum == 0 %}green
-                                {% else %}red
-                                {% endif %}">
-
-                                {% if total_quantity_ord == 0 %}
-                                {% elif remains_sum > 0 %} В работе
-                                {% elif remains_sum == 0 %} Позиция сошлась
-                                {% else %} Излишки
-                                {% endif %}
-                    </div>
-
-
-                </td>
             </tr>
         </table>
 

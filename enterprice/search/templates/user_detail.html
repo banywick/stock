@@ -13,8 +13,15 @@
         <div class="header_logo">
             <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
-        <a href="{% url 'inventory' %}"><h2> Продолжить поиск ➡️</h2></a>
-        <p>Все позиции с которыми вы взаиможейсвовали</p>
+        <div class="hello_user">
+            <h2>Детализация подсчета позиций для {{ user.username }}</h2><br>
+            Количество посчитанных позиций в инвентаризации - {{ order_count }}
+
+        </div>
+        <div class="button_link_back">
+            <a class="button" href="{% url 'inventory' %}"> Продолжить поиск </a>
+        </div>
+
     </header>
     <div class="table">
         <table class="table_inv">

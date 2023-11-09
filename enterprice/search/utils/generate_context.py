@@ -71,7 +71,9 @@ def get_inventory(request):
     unic_sum_posit = RemainsInventory.objects.values('article', 'title', 'base_unit', 'status').annotate(
         total_quantity=Sum('quantity'))
     count_row = RemainsInventory.objects.values('article').distinct().count()  # количество уникальных строк
-    not_empty_row = RemainsInventory.objects.values('article').distinct().filter(status='Сошлось').count() # уникальные отмеченные как Сошлось
+    not_empty_row = RemainsInventory.objects.filter(status='Сошлось').count()  # отмеченные как Сошлось
+
+
     remainder_row = count_row - not_empty_row
     percentage = f'{(not_empty_row / count_row) * 100:.2f}%'
     form = InputValue(request.POST)

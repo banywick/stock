@@ -23,7 +23,13 @@
             <div class="all_check_position">
                 <form action="" method="POST">
                     {% csrf_token %}
-                    <button type="submit" value="all_position">Все отмеченные позиции</button>
+                     <input type="radio" id="сошлось" name="marker" value="сошлось">
+                    <label for="сошлось">Сошлось</label><br>
+                    <input type="radio" id="в работе" name="marker" value="в работе">
+                    <label for="в работе">В работе</label><br>
+                    <input type="radio" id="перепроверить" name="marker" value="перепроверить">
+                    <label for="перепроверить">Перепроверить</label><br>
+                    <button>Выбрать сортировку</button>
                 </form>
             </div>
         </div>
@@ -47,7 +53,7 @@
             <ul>
                 <li>Выполнеено - {{ percentage }}</li>
                 <li>Поститанно - {{ not_empty_row }} </li>
-                <li>Общее количество  - {{ count_row }}</li>
+                <li>Общее количество - {{ count_row }}</li>
                 <li>Осталось - {{ remainder_row }}</li>
             </ul>
         </div>
@@ -62,7 +68,6 @@
         </div>
 
     </header>
-
 
 
     <div class="table">
@@ -84,7 +89,7 @@
                             {% elif  i.status == 'В работе' %} yellow
                             {% elif  i.status == 'Перепроверить' %} red
                             {% endif %}">
-                            {% if i.status %}{{ i.status }}{% else %}{% endif %}
+                        {% if i.status %}{{ i.status }}{% else %}{% endif %}
                     </td>
 
 

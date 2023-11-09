@@ -72,24 +72,37 @@ def get_inventory(request):
         total_quantity=Sum('quantity'))
     count_row = RemainsInventory.objects.values('article').distinct().count()  # количество уникальных строк
     not_empty_row = RemainsInventory.objects.filter(status='Сошлось').count()  # отмеченные как Сошлось
-
-
     remainder_row = count_row - not_empty_row
     percentage = f'{(not_empty_row / count_row) * 100:.2f}%'
+
     form = InputValue(request.POST)
     if request.method == 'POST':
-        values = request.POST['input'].split(' ')  # сбор значений с инпута
-        values += [''] * (4 - len(values))  # Добавляем пустые строки, если введено менее четырех слов
-        query = Q(title__icontains=values[0]) & Q(title__icontains=values[1]) & Q(title__icontains=values[2]) & Q(
-            title__icontains=values[3])
-        error_message = 'Товар не найден'
-        inventory = unic_sum_posit.filter(query) | unic_sum_posit.filter(
-            article__contains=request.POST['input'])
-        if not inventory.exists():  # если ничего не найдено из нескольких значений в инпуте
-            return {'form': form, 'e_art_title': error_message}  # post если не найдено
-        return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
-                'remainder_row': remainder_row, 'percentage': percentage}  # post
-    return {'form': form, 'count_row': count_row, 'not_empty_row': not_empty_row, 'remainder_row': remainder_row, 'percentage': percentage}  # get
+        if request.POST.get('marker') == 'сошлось':
+            inventory = RemainsInventory.objects.filter(status='Сошлось')
+            return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+                    'remainder_row': remainder_row, 'percentage': percentage}
+        if request.POST.get('marker') == 'в работе':
+            inventory = RemainsInventory.objects.filter(status='В работе')
+            return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+                    'remainder_row': remainder_row, 'percentage': percentage}
+        if request.POST.get('marker') == 'перепроверить':
+            inventory = RemainsInventory.objects.filter(status='Перепроверить')
+            return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+                    'remainder_row': remainder_row, 'percentage': percentage}
+        if request.POST.get('input'):
+            values = request.POST['input'].split(' ')  # сбор значений с инпута
+            values += [''] * (4 - len(values))  # Добавляем пустые строки, если введено менее четырех слов
+            query = Q(title__icontains=values[0]) & Q(title__icontains=values[1]) & Q(title__icontains=values[2]) & Q(
+                title__icontains=values[3])
+            error_message = 'Товар не найден'
+            inventory = unic_sum_posit.filter(query) | unic_sum_posit.filter(
+                article__contains=request.POST['input'])
+            if not inventory.exists():  # если ничего не найдено из нескольких значений в инпуте
+                return {'form': form, 'e_art_title': error_message}  # post если не найдено
+            return {'form': form, 'inventory': inventory, 'count_row': count_row, 'not_empty_row': not_empty_row,
+                    'remainder_row': remainder_row, 'percentage': percentage}  # post
+    return {'form': form, 'count_row': count_row, 'not_empty_row': not_empty_row, 'remainder_row': remainder_row,
+            'percentage': percentage}  # get
 
 
 def get_one_product(article):

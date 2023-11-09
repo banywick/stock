@@ -86,7 +86,7 @@
                     {% for r in remains %}
                         <tbody>
                         <tr>
-                            <td>{{ r.comment }}</td>
+                            <td >{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
                             <td>{{ r.code }}</td>
                             <td>{{ r.article }}</td>
                             <td>{{ r.party }}</td>

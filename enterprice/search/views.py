@@ -104,6 +104,10 @@ def inventory_detail(request, article):
     move_product = "{:.2f}".format(move_product)
     remains_sum = calculate_remains_sum(sum_remains_now,
                                         total_quantity_ord)  # тек остаток минус сумма подсчета пользователями (Движение)
+    if remains_sum < 0:
+        alert_count = abs(remains_sum)
+    else:
+        alert_count = remains_sum
 
     if request.method == 'POST':
         quantity_ord = request.POST.get('quantity_set')
@@ -117,13 +121,16 @@ def inventory_detail(request, article):
 
     context = {'product': product, 'user_set_invent': user_set_invent,
                'total_quantity_ord': total_quantity_ord, 'unic_sum_posit': unic_sum_posit, 'remains_sum': remains_sum,
-               'sum_remains_now': sum_remains_now, 'move_product': move_product, 'get_status':get_status}
+               'sum_remains_now': sum_remains_now, 'move_product': move_product, 'get_status': get_status,
+               'alert_count': alert_count}
     return render(request, 'inventory_detail.html', context=context)
 
 
 def user_detail(request):
     order = OrderInventory.objects.select_related('product').filter(user=request.user)
-    return render(request, 'user_detail.html', {'order': order})
+    order_count = OrderInventory.objects.select_related('product').filter(user=request.user).count()
+    print(order_count)
+    return render(request, 'user_detail.html', {'order': order, 'order_count': order_count})
 
 
 def delete_row(request, id_row):

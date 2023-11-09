@@ -72,10 +72,15 @@ def get_inventory(request):
         total_quantity=Sum('quantity'))
     count_row = RemainsInventory.objects.values('article').distinct().count()  # количество уникальных строк
     not_empty_row = RemainsInventory.objects.filter(status='Сошлось').count()  # отмеченные как Сошлось
+
+
     remainder_row = count_row - not_empty_row
     percentage = f'{(not_empty_row / count_row) * 100:.2f}%'
     form = InputValue(request.POST)
     if request.method == 'POST':
+        # if request.POST['input'] == '~~~':
+        #     all_check_posit = RemainsInventory.objects.filter(status='Сошлось')
+
         values = request.POST['input'].split(' ')  # сбор значений с инпута
         values += [''] * (4 - len(values))  # Добавляем пустые строки, если введено менее четырех слов
         query = Q(title__icontains=values[0]) & Q(title__icontains=values[1]) & Q(title__icontains=values[2]) & Q(

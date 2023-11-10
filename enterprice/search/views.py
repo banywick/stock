@@ -128,8 +128,7 @@ def inventory_detail(request, article):
 
 def user_detail(request):
     order = OrderInventory.objects.select_related('product').filter(user=request.user)
-    order_count = OrderInventory.objects.select_related('product').filter(user=request.user).count()
-    print(order_count)
+    order_count = OrderInventory.objects.values('product_id').distinct().count()
     return render(request, 'user_detail.html', {'order': order, 'order_count': order_count})
 
 

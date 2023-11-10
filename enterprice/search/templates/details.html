@@ -9,29 +9,28 @@
     <link rel="stylesheet" href="{% static 'css/details_style.css' %}">
     <title> Детали </title>
 </head>
-<header class="header">
-    <div class="header_logo">
-        <a href="{% url 'find' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
-    </div>
-</header>
 <body>
 <div class="main_wrapper">
-    <div class="details_cart">
-        <h3>Артикул</h3>
-        <h2> {{ art }}</h2>
-        <hr>
-        <p>{{ title }}</p>
-        <hr>
-        <h4>Проекты</h4>
-        {% for d in det %}
-            <ul>
-                <li> {{ d.project }}</li>
-                <li> {{ d.quantity }} {{ d.base_unit }}</li>
-            </ul>
-        {% endfor %}
-        <h3>Общая сумма : {{ sum }}</h3>
-        {{ name34 }}
+    <div class="description_container">
+        <div>
+            <h2>Артикул</h2>
+            <h2> {{ art }}</h2>
+            <h3>{{ title }}</h3>
+            <h3>Общая сумма : <span style="color: darkred;"><strong>{{ sum }}</strong></span></h3>
+            <hr>
+        </div>
+        <div>
+            <h4>Проекты</h4>
+        </div>
+        <div>
+            {% for d in det %}
+                <ul>
+                    <li>  {{ d.project }} </li>
+                    <p><span style="color: orangered;"><strong>{{ d.quantity }}</strong></span> {{ d.base_unit }}</p>
+                </ul>
+            {% endfor %}
+
+        </div>
     </div>
-</div>
 </body>
 </html>

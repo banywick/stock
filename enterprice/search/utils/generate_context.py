@@ -23,9 +23,8 @@ def handle_uploaded_file(request):
 
 
 def clear_sort(request):
-    if request.method == 'POST':
-        choice_project.clear()
-        return redirect('find')
+    choice_project.clear()
+    return redirect('find')
 
 
 def choice_project_dict(request):  # Словарь из выбранных проектов

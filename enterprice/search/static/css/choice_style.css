@@ -15,9 +15,24 @@
     border-radius: 20px;
 }
 
-.header_user_account {
-    border-radius: 10px;
+.header_user_account img {
+    height: 70px;
+    width: 70px;
+    border-radius: 100%;
+    margin-bottom: -20px;
+    margin-top: 10px;
 }
+
+.header_user_account a {
+    text-decoration: none;
+
+}
+
+.header_user_account p {
+
+    font-size: 20px;
+}
+
 
 .left_colum {
     background-image: url("../img/2.jpg");

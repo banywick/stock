@@ -20,15 +20,13 @@
               formaction="{% url 'choice' %}" formmethod="POST">Применить фильтр!
           </button>
 
-        <div class="header_user_account">
-            {% if user.is_authenticated %}
-                <h2>Звравствуйте</h2>
-                <p>{{ user.username }}</p>
-                    {% else %}
-                <p>Привет, гость!</p>
-                {% endif %}
-          <a href="{% url 'login' %}">Войти</a>
-         </div>
+          <div class="header_user_account">
+            {% if request.user.is_authenticated %}
+                 <img src="{% static 'img/user_icon.png' %}" alt="">
+                <h3> {{ user.username }}</h3>
+                <p><a href="{% url 'logout' %}">Выход</a></p>
+            {% endif %}
+        </div>
     </header>
     <div class="container_left_center">
         <div class="left_colum">

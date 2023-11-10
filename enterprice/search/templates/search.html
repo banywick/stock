@@ -13,25 +13,33 @@
         <div class="header_logo">
             <a href="{% url 'main' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
         </div>
-        <div class="header_find">
-            <form class="form_input" method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-            </form>
-            Информационная база : {{ file_name }}
+        <div class="info_find_container">
+            <p> Информационная база : {{ file_name }}</p>
+            <div class="header_find_container">
+                <div class="form_input">
+                    <form method="POST" id="find_form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </form>
+                </div>
+                <div class="find_button">
+                    <button type="submit" form="find_form">
+                        Найти 🔎
+                    </button>
+                </div>
+            </div>
         </div>
+
         <div class="header_button_reset_filter_wrapper">
             <div class="header_button_filter">
-                <a href="{% url 'choice' %}">Выбрать проект</a>
+                <a class="button" href="{% url 'choice' %}">Выбрать проект</a>
             </div>
-            <div class="header_button_reset">
-                <form action="{% url 'clear' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="submit" value="Очистить">
 
-                </form>
+            <div class="header_button_reset">
+                 <a class="button" href="{% url 'clear' %}">Очистить</a>
             </div>
         </div>
+
         <div class="header_list_sort">
             <ul>
                 Сотрировка по :
@@ -41,16 +49,14 @@
                 {% endfor %}
             </ul>
         </div>
+
+
         <div class="header_user_account">
-
-
             {% if request.user.is_authenticated %}
-                <h2>Здравствуйте</h2>
+                 <img src="{% static 'img/user_icon.png' %}" alt="">
                 <h3> {{ user.username }}</h3>
-                <a href="{% url 'logout' %}">Выход</a>
+                <p><a href="{% url 'logout' %}">Выход</a></p>
             {% endif %}
-
-
         </div>
     </header>
     <div class="container_left_center">
@@ -86,7 +92,7 @@
                     {% for r in remains %}
                         <tbody>
                         <tr>
-                            <td >{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
+                            <td>{% if r.comment %}{{ r.comment }}{% else %}{% endif %}</td>
                             <td>{{ r.code }}</td>
                             <td>{{ r.article }}</td>
                             <td>{{ r.party }}</td>
